@@ -1,0 +1,340 @@
+/* Kihapp, styles.css (lot K1). Polices système uniquement, aucune police distante. */
+
+:root {
+  --bg: #edf0f4;
+  --surface: #ffffff;
+  --ink: #18202e;
+  --muted: #5a6476;
+  --line: #d3d9e2;
+  --left: #1d5bbd;
+  --right: #c62f3b;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #10141b;
+    --surface: #181e27;
+    --ink: #e6eaf1;
+    --muted: #9aa4b5;
+    --line: #2b3340;
+    --left: #6e9ff2;
+    --right: #f06c76;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  line-height: 1.5;
+}
+
+/* Une règle display posée sur .ecran écraserait l'attribut hidden. */
+[hidden] { display: none !important; }
+
+.entete,
+main {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.entete { padding-top: 16px; border-bottom: 1px solid var(--line); }
+.entete h1 { margin: 0 0 12px; font-size: 1.25rem; }
+
+.ecran { padding: 16px 0; }
+.ecran h2 { margin: 0 0 12px; font-size: 1.125rem; color: var(--muted); }
+
+
+/* ---------------------------------------------------------------------------
+   Écran #poomsae (lot K13) : la feuille de la page animée du 14/10, chaque
+   sélecteur sous #poomsae. Bleu = gauche, rouge = droite. La page avait deux
+   colonnes au-dessus de 860 px ; la coquille de l'app est une colonne de 40 rem,
+   l'écran reste donc sur une seule colonne. Aucune police distante.
+   --------------------------------------------------------------------------- */
+
+/* Les variables de couleur que la coquille n'a pas, et les deux piles de polices (système). */
+#poomsae {
+  --mat: #e4e9f0; --grid: #cbd3de; --mark: #b9c3d1; --torso: #2a3447;
+  --left-soft: #dbe6f8; --right-soft: #f8dfe1;
+  --display: "Noto Serif KR", Georgia, serif;
+  --body: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  display: grid; gap: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+  #poomsae {
+    --mat: #141922; --grid: #252d39; --mark: #334052; --torso: #c9d2e0;
+    --left-soft: #1c2a42; --right-soft: #3a1d22;
+  }
+}
+
+/* Le h2 générique de la coquille est gris et petit ; ceux de l'écran ont leur propre taille. */
+#poomsae h2 { color: var(--ink); }
+#poomsae .retour { margin: 0; font-size: 14px; }
+#poomsae .retour a { color: var(--muted); }
+#poomsae .main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+
+#poomsae header { display:grid; gap:6px; }
+#poomsae .eyebrow { font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); }
+#poomsae .titre { font-family:var(--display); font-weight:700; font-size:clamp(30px,5vw,44px); line-height:1.1; margin:0; text-wrap:balance; }
+#poomsae .titre .ko { font-weight:400; color:var(--muted); font-size:.55em; margin-left:.35em; white-space:nowrap; }
+#poomsae .titre .tri { font-weight:400; margin-left:.2em; }
+#poomsae .lede { margin:0; color:var(--muted); max-width:65ch; }
+#poomsae .legend { display:flex; flex-wrap:wrap; gap:8px 16px; font-size:14px; margin-top:4px; }
+#poomsae .legend span { display:inline-flex; align-items:center; gap:6px; }
+#poomsae .sw { width:22px; height:6px; border-radius:3px; display:inline-block; }
+#poomsae .sw.l { background:var(--left); }
+#poomsae .sw.r { background:var(--right); }
+#poomsae .sw.dash { height:0; border-top:3px dashed var(--muted); border-radius:0; background:none; }
+@media (max-width:480px) {
+  #poomsae .cell { font-size:11px; padding:5px 3px; }
+  #poomsae .cell b { font-size:14px; }
+  #poomsae .caption { font-size:16px; }
+}
+#poomsae .panel { background:var(--surface); border:1px solid var(--line); border-radius:14px; overflow:hidden; min-width:0; }
+#poomsae .stagehead { display:flex; flex-wrap:wrap; gap:4px 12px; align-items:baseline; justify-content:space-between; padding:12px 16px; }
+#poomsae .mvtitle { font-family:var(--display); font-size:20px; font-weight:700; line-height:1.25; }
+#poomsae .mvtitle .n { font-variant-numeric:tabular-nums; color:var(--muted); margin-right:6px; }
+#poomsae .mvsub { font-size:14px; color:var(--muted); }
+#poomsae .chip { font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px; background:var(--ink); color:var(--surface); white-space:nowrap; }
+#poomsae .chip.C { background:var(--right); }
+#poomsae #stage { display:block; width:100%; height:auto; background:var(--mat); overflow:hidden; touch-action:pan-y; }
+#poomsae .stills { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; padding:10px 16px 0; }
+#poomsae .stills[hidden] { display:none; }
+#poomsae .still { margin:0; display:grid; gap:4px; min-width:0; }
+#poomsae .still button { padding:0; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--mat); display:block; width:100%; cursor:pointer; }
+#poomsae .still button[aria-current="true"] { border-color:var(--ink); box-shadow:0 0 0 2px var(--ink); }
+#poomsae .still svg { display:block; width:100%; height:auto; }
+#poomsae .still figcaption { font-size:12px; line-height:1.3; color:var(--muted); text-align:center; padding:0 2px; }
+#poomsae .still figcaption b { color:var(--ink); }
+#poomsae .strip { position:relative; display:flex; gap:3px; padding:12px 16px 0; }
+#poomsae .cell { flex-basis:0; min-width:0; font-size:12px; hyphens:auto; line-height:1.25; padding:6px 6px; border-radius:6px; background:var(--bg); color:var(--muted); text-align:center; border:1px solid transparent; }
+#poomsae .cell b { display:block; font-size:15px; line-height:1.1; margin-bottom:2px; font-variant-numeric:tabular-nums; }
+#poomsae .cell.on { background:var(--ink); color:var(--surface); }
+#poomsae .cell.on.C { background:var(--right); color:#fff; }
+#poomsae .strip .head { position:absolute; top:8px; bottom:-4px; width:2px; background:var(--right); border-radius:1px; pointer-events:none; }
+#poomsae .caption { padding:12px 16px 4px; font-size:17px; line-height:1.55; min-height:7.2em; max-width:70ch; }
+#poomsae .caption b { font-weight:700; }
+#poomsae .controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:12px 16px; border-top:1px solid var(--line); }
+#poomsae .controls .grow { flex:1 1 160px; min-width:0; display:flex; }
+#poomsae input[type=range] { width:100%; accent-color:var(--right); }
+#poomsae button { font:inherit; font-size:14px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:7px 12px; cursor:pointer; line-height:1.2; }
+#poomsae button:hover { border-color:var(--muted); }
+#poomsae button:focus-visible, #poomsae input:focus-visible { outline:2px solid var(--left); outline-offset:2px; }
+#poomsae button.primary { background:var(--ink); color:var(--surface); border-color:var(--ink); font-weight:700; min-width:104px; }
+#poomsae .seg { display:inline-flex; flex-wrap:wrap; border:1px solid var(--line); border-radius:9px; overflow:hidden; }
+#poomsae .seg button { border:0; border-radius:0; padding:7px 10px; font-variant-numeric:tabular-nums; }
+#poomsae .seg button+button { border-left:1px solid var(--line); }
+#poomsae .seg button[aria-pressed="true"] { background:var(--ink); color:var(--surface); }
+#poomsae .opts { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; padding:0 16px 14px; font-size:14px; color:var(--muted); }
+#poomsae .opts label { display:inline-flex; gap:6px; align-items:center; cursor:pointer; }
+#poomsae .side { display:grid; gap:20px; min-width:0; }
+#poomsae .side h2 { font-family:var(--display); font-size:18px; margin:0; padding:12px 16px 4px; }
+#poomsae .side p.note { margin:0; padding:0 16px 12px; font-size:13px; color:var(--muted); }
+#poomsae #map { display:block; width:100%; height:auto; background:var(--mat); }
+#poomsae ol.mvs { list-style:none; margin:0; padding:6px; display:grid; gap:4px; }
+#poomsae .mvbtn { width:100%; display:grid; grid-template-columns:28px minmax(0,1fr); gap:4px 10px; text-align:left; border:1px solid transparent; background:transparent; padding:8px 10px; border-radius:10px; }
+#poomsae .mvbtn:hover { background:var(--bg); }
+#poomsae .mvbtn[aria-current="true"] { background:var(--bg); border-color:var(--line); }
+#poomsae .mvbtn .n { font-family:var(--display); font-weight:700; font-size:20px; line-height:1.2; font-variant-numeric:tabular-nums; }
+#poomsae .mvbtn .t { min-width:0; font-size:14px; line-height:1.35; }
+#poomsae .mvbtn .ko { color:var(--muted); font-family:var(--display); margin-left:4px; }
+#poomsae .mvbtn .fr { color:var(--muted); }
+#poomsae .method { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px; display:grid; gap:6px; }
+#poomsae .method h2 { font-family:var(--display); font-size:19px; margin:0; }
+#poomsae .method ol { margin:0; padding-left:22px; display:grid; gap:4px; max-width:70ch; }
+#poomsae .method li b { font-weight:700; }
+#poomsae .method ul { margin:0; padding-left:22px; display:grid; gap:6px; max-width:70ch; }
+#poomsae .method p.src { margin:0; font-size:13px; color:var(--muted); max-width:70ch; }
+#poomsae .tips { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+#poomsae .tip { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px; font-size:15px; min-width:0; }
+#poomsae .tip h3 { font-family:var(--display); font-size:17px; margin:0 0 4px; }
+#poomsae .tip p { margin:0; color:var(--muted); }
+#poomsae svg .grid { stroke:var(--grid); stroke-width:1; }
+#poomsae svg .mark { stroke:var(--mark); stroke-linecap:round; fill:none; }
+#poomsae svg .l { stroke:var(--left); stroke-linecap:round; }
+#poomsae svg .r { stroke:var(--right); stroke-linecap:round; }
+#poomsae svg .k { stroke:var(--ink); stroke-linecap:round; }
+#poomsae svg .fl { fill:var(--left); }
+#poomsae svg .fr { fill:var(--right); }
+#poomsae svg .fist { stroke:var(--surface); stroke-width:2.5; }
+#poomsae svg .torso { fill:var(--torso); stroke:var(--torso); stroke-width:4; stroke-linejoin:round; }
+#poomsae svg .hd { fill:var(--surface); stroke:var(--ink); stroke-width:3; }
+#poomsae svg .gh { stroke:var(--ink); fill:none; stroke-linecap:round; opacity:.22; }
+#poomsae svg .ghf { fill:var(--ink); opacity:.22; }
+#poomsae svg .footl { fill:var(--left); opacity:.85; }
+#poomsae svg .footr { fill:var(--right); opacity:.85; }
+#poomsae svg .ghostl { fill:var(--left-soft); stroke:var(--left); stroke-width:2; stroke-dasharray:5 4; }
+#poomsae svg .ghostr { fill:var(--right-soft); stroke:var(--right); stroke-width:2; stroke-dasharray:5 4; }
+#poomsae svg .trail { fill:none; stroke-width:3; stroke-dasharray:5 5; stroke-linecap:round; opacity:.9; }
+#poomsae svg .trail.l { stroke:var(--left); }
+#poomsae svg .trail.r { stroke:var(--right); }
+#poomsae svg .trail.faint, #poomsae svg .th.faint { opacity:.3; }
+#poomsae svg .th.l { fill:var(--left); }
+#poomsae svg .th.r { fill:var(--right); }
+#poomsae svg .gz { stroke:var(--ink); stroke-width:2; stroke-dasharray:6 6; opacity:.3; fill:none; }
+#poomsae svg .gz.on { opacity:.85; stroke-width:3; }
+#poomsae svg .gzh { fill:var(--ink); opacity:.3; }
+#poomsae svg .gzh.on { opacity:.85; }
+#poomsae svg .lab { fill:var(--muted); font-family:var(--body); font-size:13px; }
+#poomsae svg .labk { fill:var(--ink); font-family:var(--body); font-size:12px; font-weight:700; }
+#poomsae svg .mk { fill:var(--surface); stroke:var(--muted); stroke-width:1.5; }
+#poomsae svg .mk.on { fill:var(--ink); stroke:var(--ink); }
+#poomsae svg .mkt { fill:var(--ink); font-family:var(--body); font-size:12px; font-weight:700; font-variant-numeric:tabular-nums; }
+#poomsae svg .mkt.on { fill:var(--surface); }
+#poomsae svg .face { stroke:var(--ink); stroke-width:2.5; fill:none; stroke-linecap:round; }
+#poomsae svg .faceh { fill:var(--ink); }
+@media (prefers-reduced-motion: reduce) {
+  #poomsae .strip .head { transition:none; }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Écrans #accueil, #lecon et #fin (lot K6). Vert = juste, rouge = faux : la
+   couleur ne porte jamais seule la correction, le texte « Bien ! » ou « La
+   bonne réponse : ... » est toujours écrit dessous. Zones de toucher de 48 px
+   au moins.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --ok: #1a7f46; --ok-soft: #dcf2e4;
+  --ko: #c62f3b; --ko-soft: #f8dfe1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ok: #58c98a; --ok-soft: #173826;
+    --ko: #f06c76; --ko-soft: #3a1d22;
+  }
+}
+
+.bouton {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 10px 16px;
+  font: inherit; color: var(--ink); text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; cursor: pointer;
+}
+.bouton.principal { background: var(--ink); color: var(--surface); border-color: var(--ink); font-weight: 700; }
+.bouton:focus-visible, .unite-bouton:focus-visible, .reponse:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; }
+
+.bandeau { margin: 0 0 12px; padding: 10px 14px; background: var(--ko-soft); border: 1px solid var(--ko); border-radius: 12px; }
+
+.ecran h2.ceinture { margin: 0 0 12px; font-size: 1.375rem; color: var(--ink); }
+.unites { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 8px; }
+.unite { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.unite.fermee { display: grid; gap: 8px; padding: 12px 14px; color: var(--muted); }
+.unite-bouton {
+  display: grid; gap: 8px; width: 100%; min-height: 48px; padding: 12px 14px;
+  font: inherit; color: inherit; text-align: left; background: none; border: 0; border-radius: 14px; cursor: pointer;
+}
+.unite-tete { display: flex; align-items: center; gap: 8px; }
+.unite-titre { flex: 1; font-weight: 600; }
+.unite-compte { color: var(--muted); font-variant-numeric: tabular-nums; }
+.cadenas { display: inline-flex; }
+.barre { display: block; height: 8px; overflow: hidden; background: var(--line); border-radius: 4px; }
+.barre-rempli { display: block; width: 100%; height: 100%; background: var(--ok); border-radius: 4px; transform: scaleX(0); transform-origin: left center; transition: transform .2s; }
+
+.actions { display: grid; gap: 8px; margin: 0 0 16px; }
+.rien-fragile { margin: 0; color: var(--muted); }
+.serie { margin: 0 0 8px; font-weight: 600; }
+.cours { margin-bottom: 8px; }
+.cours-choix { display: flex; gap: 8px; margin-top: 8px; }
+.cours-choix .bouton { flex: 1; }
+.lien-poomsae a { display: inline-block; padding: 12px 0; }
+.carte-perte { margin: 8px 0 0; padding: 12px 14px; font-size: .9rem; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+
+.lecon-tete { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.lecon-tete .barre { flex: 1; }
+.lecon-compte { color: var(--muted); font-variant-numeric: tabular-nums; }
+.rattrapage { display: inline-block; margin: 0 0 8px; padding: 2px 10px; font-size: .85rem; font-weight: 700; color: var(--surface); background: var(--ink); border-radius: 999px; }
+.ecran h2.consigne { margin: 0 0 8px; font-size: 1rem; }
+.question { margin: 0; font-size: 2rem; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.question-hangeul { min-height: 1.5em; margin: 4px 0 20px; color: var(--muted); }
+.choix { display: grid; gap: 10px; }
+.reponse {
+  min-height: 56px; padding: 12px 16px; font: inherit; color: var(--ink); text-align: left;
+  background: var(--surface); border: 2px solid var(--line); border-radius: 14px; cursor: pointer;
+}
+.reponse:disabled { cursor: default; }
+.reponse.juste { background: var(--ok-soft); border-color: var(--ok); }
+.reponse.faux { background: var(--ko-soft); border-color: var(--ko); }
+.retour-reponse { min-height: 1.5em; margin: 16px 0 8px; font-weight: 700; }
+#lecon-continuer { width: 100%; }
+
+.score { margin: 8px 0; font-size: 1.5rem; font-weight: 700; }
+.montes-titre { margin: 16px 0 4px; color: var(--muted); }
+.montes { margin: 0 0 16px; padding-left: 1.25rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .barre-rempli { transition: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Écrans #lexique, #sources et #reglages (lot K9), et leurs liens depuis
+   l'accueil. Zones de toucher de 48 px au moins ; le code de sauvegarde, long
+   et sans espace, se coupe où il veut plutôt que de faire défiler la page.
+   --------------------------------------------------------------------------- */
+
+.liens-service { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.liens-service a, .lien-retour a { display: inline-block; padding: 12px 0; }
+.lien-retour { margin: 0; }
+.lien-copier { margin: 8px 0 0; }
+.lien-copier .bouton { width: 100%; }
+
+.ecran h3 { margin: 20px 0 8px; font-size: 1rem; }
+.reglage { margin-bottom: 8px; padding: 4px 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.reglage h3 { margin-top: 12px; }
+.reglage p { margin: 0 0 8px; }
+.reglage-aide { display: block; margin: 0 0 8px; color: var(--muted); font-size: .9rem; }
+.reglage-retour { min-height: 1.5em; margin: 8px 0 0; font-weight: 600; }
+.reglage .bouton { width: 100%; }
+.zone-code {
+  display: block; width: 100%; margin: 0 0 8px; padding: 10px 12px;
+  font: .8rem/1.4 ui-monospace, "SF Mono", Consolas, monospace; overflow-wrap: anywhere; word-break: break-all;
+  color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; resize: vertical;
+}
+.zone-code:focus-visible { outline: 2px solid var(--left); outline-offset: 2px; }
+.reglage .cours-choix { margin-top: 8px; }
+.rythme { display: flex; gap: 8px; }
+.rythme .bouton { flex: 1 1 0; width: auto; padding: 10px 2px; font-size: .9rem; text-align: center; }
+.rythme .bouton[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); font-weight: 700; }
+.version { margin: 12px 0 0; color: var(--muted); font-size: .9rem; }
+
+.lex-groupe h3 { margin-top: 24px; }
+.lex-liste { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.lex-mot { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: baseline; padding: 10px 14px; }
+.lex-mot + .lex-mot { border-top: 1px solid var(--line); }
+.lex-nom { display: grid; min-width: 0; }
+.lex-fftda { font-weight: 700; overflow-wrap: anywhere; }
+.lex-fr { color: var(--muted); overflow-wrap: anywhere; }
+.lex-ko { color: var(--muted); font-size: .85rem; }
+.lex-boite { grid-column: 1 / -1; font-size: .85rem; font-weight: 600; }
+
+.src-liste { margin: 0 0 8px; padding-left: 1.5rem; }
+.src-liste li { margin-bottom: 10px; overflow-wrap: anywhere; }
+.src-doc { list-style: none; }
+.src-liste:not(ol) { padding-left: 0; }
+.src-date, .src-mots { display: block; color: var(--muted); font-size: .9rem; }
+.src-doute p { margin: 0; }
+.src-phrase { margin: 20px 0 8px; font-weight: 700; }
+
+/* ---------------------------------------------------------------------------
+   Bandeau « Nouvelle version prête » (lot K10) : collé en bas de l'écran, à portée
+   du pouce, au-dessus de tout. Tant qu'il est là, la page garde de la place en bas
+   pour que rien ne reste caché dessous.
+   --------------------------------------------------------------------------- */
+
+.maj-bandeau {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: var(--surface); border-top: 1px solid var(--line);
+}
+.maj-texte { margin: 0; font-weight: 700; }
+body:has(.maj-bandeau:not([hidden])) { padding-bottom: 6rem; }

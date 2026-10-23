@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Fond plein cadre (--ink). Le motif reste dans les 80 % centraux, donc la
+       même image sert aussi pour l'icône maskable. -->
+  <rect width="512" height="512" fill="#18202e"/>
+  <g fill="none" stroke="#ffffff" stroke-width="58" stroke-linejoin="miter">
+    <path d="M172 112 V372"/>
+    <path d="M172 290 L346 116"/>
+    <path d="M242 220 L352 372"/>
+  </g>
+  <rect x="140" y="404" width="232" height="26" fill="#c62f3b"/>
+</svg>

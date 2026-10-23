@@ -1,1 +1,221 @@
-<!doctype html><meta charset="utf-8"><title>Kihapp</title><p>Kihapp arrive bientôt.</p>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kihapp</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
+  <meta name="theme-color" content="#18202e">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="entete"><h1>Kihapp</h1></header>
+  <main>
+    <section id="accueil" class="ecran">
+      <div id="acc-bandeaux"></div>
+      <h2 id="acc-ceinture" class="ceinture"></h2>
+      <ul id="acc-unites" class="unites"></ul>
+      <div id="acc-actions" class="actions"></div>
+      <p id="acc-serie" class="serie"></p>
+      <div class="cours">
+        <button type="button" id="acc-cours" class="bouton">J'étais au cours</button>
+        <div id="acc-cours-choix" class="cours-choix" hidden>
+          <button type="button" class="bouton" data-jour="aujourdhui">Aujourd'hui</button>
+          <button type="button" class="bouton" data-jour="hier">Hier</button>
+        </div>
+      </div>
+      <p class="lien-poomsae"><a href="#poomsae">Taegueug Il Jang</a></p>
+      <nav class="liens-service" aria-label="Lexique, sources et réglages">
+        <a href="#lexique">Lexique</a>
+        <a href="#sources">Sources</a>
+        <a href="#reglages">Réglages</a>
+      </nav>
+      <p class="carte-perte">Ta progression reste sur ce téléphone, sans compte. Si tu changes de téléphone ou effaces les données du navigateur, elle est perdue. Installe Kihapp sur l'écran d'accueil, et copie ton code de sauvegarde de temps en temps.</p>
+      <p class="lien-copier"><a href="#reglages" id="acc-copier-code" class="bouton">Copier mon code</a></p>
+    </section>
+    <section id="lecon" class="ecran" hidden>
+      <div class="lecon-tete">
+        <button type="button" id="lecon-quitter" class="bouton">Quitter</button>
+        <span id="lecon-barre" class="barre" role="progressbar" aria-label="Avancée de la leçon" aria-valuemin="0"><span class="barre-rempli"></span></span>
+        <span id="lecon-compte" class="lecon-compte"></span>
+      </div>
+      <p id="lecon-rattrapage" class="rattrapage" hidden>On le revoit</p>
+      <h2 id="lecon-consigne" class="consigne"></h2>
+      <p id="lecon-question" class="question"></p>
+      <p id="lecon-hangeul" class="question-hangeul" lang="ko"></p>
+      <div id="lecon-choix" class="choix"></div>
+      <p id="lecon-retour" class="retour-reponse" role="status"></p>
+      <button type="button" id="lecon-continuer" class="bouton principal" hidden>Continuer</button>
+    </section>
+    <section id="fin" class="ecran" hidden>
+      <div id="fin-bandeaux"></div>
+      <h2>Fin de leçon</h2>
+      <p id="fin-score" class="score"></p>
+      <p id="fin-montes-titre" class="montes-titre" hidden>Tu as fait avancer :</p>
+      <ul id="fin-montes" class="montes"></ul>
+      <p id="fin-serie" class="serie"></p>
+      <p><a href="#accueil" class="bouton principal">Retour à l'accueil</a></p>
+    </section>
+    <section id="lexique" class="ecran" hidden>
+      <p class="lien-retour"><a href="#accueil">← Accueil</a></p>
+      <h2>Lexique</h2>
+      <div id="lex-groupes"></div>
+    </section>
+    <section id="sources" class="ecran" hidden>
+      <p class="lien-retour"><a href="#accueil">← Accueil</a></p>
+      <h2>Sources</h2>
+      <ul id="src-documents" class="src-liste"></ul>
+      <h3>Les doutes</h3>
+      <p class="reglage-aide">Là où les sources se contredisent ou ne disent pas tout.</p>
+      <ol id="src-doutes" class="src-liste"></ol>
+      <p class="src-phrase">Kihapp prépare, le professeur corrige.</p>
+      <p>Tu vois une erreur ? Dis-le à Corentin au club.</p>
+    </section>
+    <section id="reglages" class="ecran" hidden>
+      <p class="lien-retour"><a href="#accueil">← Accueil</a></p>
+      <h2>Réglages</h2>
+      <div class="reglage">
+        <h3>Ma sauvegarde</h3>
+        <p class="reglage-aide">Le code garde ta progression. Colle-le sur un autre téléphone pour la retrouver.</p>
+        <button type="button" id="reg-copier" class="bouton principal">Copier mon code</button>
+        <p id="reg-copie" class="reglage-retour" role="status"></p>
+        <textarea id="reg-code-affiche" class="zone-code" rows="6" readonly spellcheck="false" aria-label="Mon code de sauvegarde" hidden></textarea>
+      </div>
+      <div class="reglage">
+        <h3>Coller un code</h3>
+        <label for="reg-coller" class="reglage-aide">Colle ici le code copié sur l'autre téléphone.</label>
+        <textarea id="reg-coller" class="zone-code" rows="4" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off"></textarea>
+        <button type="button" id="reg-verifier" class="bouton">Vérifier</button>
+        <p id="reg-verdict" class="reglage-retour" role="status"></p>
+        <div id="reg-confirmation" class="cours-choix" hidden>
+          <button type="button" id="reg-remplacer" class="bouton principal">Remplacer ma progression</button>
+          <button type="button" id="reg-annuler" class="bouton">Annuler</button>
+        </div>
+      </div>
+      <div class="reglage">
+        <h3>Rythme de dictée par défaut</h3>
+        <div class="rythme" role="group" aria-label="Rythme de dictée par défaut">
+          <button type="button" class="bouton" data-rythme="4" aria-pressed="false">Lent 4 s</button>
+          <button type="button" class="bouton" data-rythme="2.5" aria-pressed="false">Moyen 2,5 s</button>
+          <button type="button" class="bouton" data-rythme="1.5" aria-pressed="false">Rapide 1,5 s</button>
+        </div>
+      </div>
+      <div class="reglage">
+        <h3>Stockage protégé</h3>
+        <p id="reg-stockage"></p>
+      </div>
+      <p class="carte-perte">Ta progression reste sur ce téléphone, sans compte. Si tu changes de téléphone ou effaces les données du navigateur, elle est perdue. Installe Kihapp sur l'écran d'accueil, et copie ton code de sauvegarde de temps en temps.</p>
+      <p id="reg-version" class="version"></p>
+    </section>
+    <section id="poomsae" class="ecran" hidden>
+      <p class="retour"><a href="#accueil">← Accueil</a></p>
+      <header>
+        <div class="eyebrow">Taekwondo · premier poomsae · mouvements 1 à 6</div>
+        <h2 class="titre">Taegueug Il Jang <span class="tri" aria-hidden="true">☰</span><span class="ko">태극 1장</span></h2>
+        <p class="lede">Comme dans le miroir du dojang : le bonhomme est face à toi et son bras gauche est à ta gauche. Pour chaque mouvement, les images fixes (avant, préparation, fin), l'animation entre les deux, et des flèches qui montrent le chemin de chaque poing. Les gestes et les consignes viennent de la vidéo officielle du Kukkiwon.</p>
+        <div class="legend" aria-label="Légende">
+          <span><i class="sw l"></i>bras et jambe gauches</span>
+          <span><i class="sw r"></i>bras et jambe droits</span>
+          <span><i class="sw dash"></i>flèche : le chemin que suit le poing ou le pied</span>
+          <span>pointillés au sol : là où le pied va se poser</span>
+        </div>
+      </header>
+
+      <div class="main">
+        <section class="panel" aria-label="Animation">
+          <div class="stagehead">
+            <div>
+              <div class="mvtitle" id="mvTitle"><span class="n">0</span>Départ</div>
+              <div class="mvsub" id="mvSub">Tchoumbi, position prête</div>
+            </div>
+            <span class="chip" id="chip">Départ</span>
+          </div>
+          <svg id="stage" viewBox="0 0 600 400" role="img" aria-label="Figure animée qui exécute le mouvement en cours"></svg>
+          <div class="stills" id="stills" hidden>
+            <figure class="still"><button id="still0" aria-current="false" title="Aller à cette position"><svg viewBox="130 50 340 330" aria-hidden="true"></svg></button><figcaption id="stillc0"></figcaption></figure>
+            <figure class="still"><button id="still1" aria-current="false" title="Aller à cette position"><svg viewBox="130 50 340 330" aria-hidden="true"></svg></button><figcaption id="stillc1"></figcaption></figure>
+            <figure class="still"><button id="still2" aria-current="false" title="Aller à cette position"><svg viewBox="130 50 340 330" aria-hidden="true"></svg></button><figcaption id="stillc2"></figcaption></figure>
+          </div>
+          <div class="strip" id="strip" aria-hidden="true"></div>
+          <div class="caption" id="caption" aria-live="polite"></div>
+          <div class="controls">
+            <button id="prev" title="Temps précédent (flèche gauche)">← Temps</button>
+            <button id="play" class="primary" title="Lecture ou pause (espace)">▶ Lecture</button>
+            <button id="next" title="Temps suivant (flèche droite)">Temps →</button>
+            <div class="seg" role="group" aria-label="Vitesse">
+              <button data-speed="0.25" aria-pressed="false">×¼</button>
+              <button data-speed="0.5" aria-pressed="true">×½</button>
+              <button data-speed="1" aria-pressed="false">×1</button>
+            </div>
+            <div class="grow"><input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position dans l'enchaînement"></div>
+          </div>
+          <div class="opts">
+            <div class="seg" role="group" aria-label="Point de vue">
+              <button data-cam="miroir" aria-pressed="true">Miroir</button>
+              <button data-cam="tq" aria-pressed="false">Trois-quarts</button>
+              <button data-cam="dos" aria-pressed="false">De dos</button>
+              <button data-cam="cote" aria-pressed="false">De côté</button>
+              <button data-cam="dessus" aria-pressed="false">Dessus</button>
+            </div>
+            <label><input type="checkbox" id="follow" checked> La caméra tourne avec toi</label>
+            <label><input type="checkbox" id="repeat"> Répéter le mouvement</label>
+            <label id="voiceLab"><input type="checkbox" id="voice"> Compter à voix haute</label>
+          </div>
+        </section>
+
+        <aside class="side">
+          <section class="panel" aria-label="Carte du sol">
+            <h2>Où tu es sur le tracé</h2>
+            <p class="note">Vu du plafond, l'avant de la salle en haut. Le tracé reprend le trigramme ☰.</p>
+            <svg id="map" viewBox="0 0 280 250" role="img" aria-label="Carte du sol vue de dessus"></svg>
+          </section>
+          <section class="panel" aria-label="Mouvements">
+            <h2>Les six mouvements</h2>
+            <ol class="mvs" id="mvList"></ol>
+          </section>
+        </aside>
+      </div>
+
+      <section class="method" aria-label="Méthode">
+        <h2>Comment t'en servir, un mouvement à la fois</h2>
+        <ol>
+          <li><b>Prends la position de l'image 1</b> toi-même, devant un miroir si tu en as un.</li>
+          <li><b>Mets-toi dans la position de l'image 2</b>, sans bouger les pieds. Pour un blocage, c'est la préparation : le poing au bout de sa flèche, à l'épaule opposée, tiens-la deux secondes. Pour un coup de poing, c'est le bras qui a bloqué qui remonte devant toi, relâché, pendant que l'autre poing attend à la hanche.</li>
+          <li><b>Passe à l'image suivante</b>, toujours pieds immobiles : chaque poing suit sa flèche, les deux en même temps. Refais la préparation puis le geste cinq fois de suite, en disant « un… deux ».</li>
+          <li><b>Ajoute le pied</b> : il voyage pendant « un », il se pose sur « deux ». Lance l'animation en ×¼ et fais-la en même temps.</li>
+          <li>Quand le mouvement sort sans réfléchir, <b>passe au suivant</b>, puis enchaîne les deux.</li>
+        </ol>
+      </section>
+
+      <section class="method" aria-label="Consignes du Kukkiwon">
+        <h2>Ce que dit le Kukkiwon pour ces six mouvements</h2>
+        <p class="src">Vidéo « TAEGEUK 1JANG », chaîne Kukkiwon World Taekwondo Headquarters, 15 mars 2021, 16 min. Nos mouvements 1 à 6 sont sa « part 1 » (de 8:12 à 10:16). Traduit des sous-titres anglais.</p>
+        <ul>
+          <li><b>Position de départ (Tchoumbi).</b> Pieds joints, puis le pied gauche s'écarte d'une longueur de pied. Inspire en montant les mains ouvertes du bas-ventre au plexus, expire en redescendant les poings au bas-ventre. Coudes pliés comme les angles d'un hexagone, un poing d'écart entre les poings. Ne monte pas les épaules, ne les crispe pas.</li>
+          <li><b>Le pied du mouvement 1.</b> Le poids passe sur la plante du pied droit ; le pied gauche se déplace légèrement, en frôlant le sol, et sa plante touche le sol avant le talon. Le mouvement est fini au moment où le talon se pose.</li>
+          <li><b>Le pas des mouvements 2 et 4.</b> Doux et naturel, les deux genoux souples. Attention à ne pas poser le talon en premier.</li>
+          <li><b>Le demi-tour du mouvement 3.</b> On tourne avec le poids sur la plante du pied gauche.</li>
+          <li><b>La position longue du mouvement 5.</b> Le talon du pied arrière ne doit pas quitter le sol.</li>
+          <li><b>Blocage bas (Ale Maki).</b> Le coude du bras qui bloque est presque tendu, le poing deux poings au-dessus du genou. Le tronc et le bras tournent en même temps ; le coude ne descend pas en ligne droite, il décrit un arc. Le bras qui revient : poignet droit, dos de la main vers le bas, posé juste au-dessus de la ceinture. Ne plie pas trop les coudes.</li>
+          <li><b>Coup de poing (Montong Jileugui).</b> Le bras frappe tout droit en frôlant la taille, le coude ne s'ouvre pas vers l'extérieur, le poing s'aligne avec le plexus de la cible. La rotation du poignet se termine au contact. L'autre bras revient en frôlant la taille, sans tirer l'épaule en arrière.</li>
+          <li><b>Ap Seugui.</b> Un pas entre les pieds, le corps droit, le poids au milieu. Le bord interne du pied avant et l'intérieur du talon arrière sont sur la même ligne ; le pied arrière est ouvert d'environ 30°.</li>
+          <li><b>Ap Koubi Seugui.</b> Un pas et demi entre les pieds, un poing d'écart en largeur (la FFTDA dit : une largeur d'épaule). Genou et pied avant vers l'avant, le genou ne dépasse pas les orteils ; la jambe arrière tendue, le pied arrière ouvert de 30°.</li>
+        </ul>
+      </section>
+
+      <div class="tips">
+        <div class="tip"><h3>La règle du timing</h3><p>Les bras se préparent pendant tout le trajet du pied. Le blocage ou le coup part à l'instant où le pied touche le sol. « Un » pendant le pas, « deux » à la pose : jamais le coup avant le pied.</p></div>
+        <div class="tip"><h3>Les deux bras bougent ensemble</h3><p>Quand un bras bloque ou frappe, l'autre revient à la hanche, poing paume vers le haut. Si un bras reste immobile, il manque la moitié du geste.</p></div>
+        <div class="tip"><h3>Ce qui reste un schéma</h3><p>L'ordre des mouvements, la place des poings et le bras qui remonte devant avant un coup de poing sont relus image par image sur la vidéo du Kukkiwon, et recoupés avec la fiche de la FFTDA. Le bonhomme ne montre ni le poids du corps ni la rotation des hanches : ça, c'est le cours.</p></div>
+      </div>
+    </section>
+    <section id="dictee" class="ecran" hidden><h2>Dictée</h2></section>
+  </main>
+  <div id="maj-bandeau" class="maj-bandeau" role="status" hidden>
+    <p class="maj-texte">Nouvelle version prête</p>
+    <button type="button" id="maj-bouton" class="bouton principal">Mettre à jour</button>
+  </div>
+</body>
+</html>
