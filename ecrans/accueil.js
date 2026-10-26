@@ -9,7 +9,7 @@
 // « J'étais au cours » sont branchés une seule fois.
 
 import { CEINTURES, UNITES } from '../contenu/parcours.js';
-import { VOCABULAIRE } from '../contenu/vocabulaire.js';
+import { ELEMENTS } from '../contenu/elements.js';
 import { ajouterJours } from '../moteur/dates.js';
 import { estDu } from '../moteur/leitner.js';
 import { etatUnites, pointsFaibles } from '../moteur/parcours_logique.js';
@@ -59,7 +59,7 @@ function ligneUnite(unite) {
 
 // Éléments vus et à revoir aujourd'hui (la boîte 1 est due le jour même).
 function nombreARevoir(etat) {
-  return VOCABULAIRE.filter((e) => e.exercice && etat.elements[e.id] && estDu(etat.elements[e.id], aujourdhui())).length;
+  return ELEMENTS.filter((e) => e.exercice && etat.elements[e.id] && estDu(etat.elements[e.id], aujourdhui())).length;
 }
 
 function bouton(id, texte, mode) {
@@ -74,7 +74,7 @@ function actions(etat) {
   const gestes = [];
   const aRevoir = nombreARevoir(etat);
   if (aRevoir > 0) gestes.push(bouton('acc-reviser', `Réviser (${aRevoir} à revoir)`, 'revision'));
-  if (pointsFaibles(etat, VOCABULAIRE).length > 0) gestes.push(bouton('acc-faibles', 'Mes points faibles', 'points-faibles'));
+  if (pointsFaibles(etat, ELEMENTS).length > 0) gestes.push(bouton('acc-faibles', 'Mes points faibles', 'points-faibles'));
   else {
     const rien = creer('p', 'rien-fragile', "Rien de fragile pour l'instant.");
     rien.id = 'acc-rien-fragile';
@@ -104,7 +104,7 @@ export function afficherAccueil(racine) {
   const etat = etatCourant();
   afficherBandeaux(racine.querySelector('#acc-bandeaux'));
   racine.querySelector('#acc-ceinture').textContent = CEINTURES[0].titre;
-  racine.querySelector('#acc-unites').replaceChildren(...etatUnites(etat, VOCABULAIRE, UNITES).map(ligneUnite));
+  racine.querySelector('#acc-unites').replaceChildren(...etatUnites(etat, ELEMENTS, UNITES).map(ligneUnite));
   racine.querySelector('#acc-actions').replaceChildren(...actions(etat));
   racine.querySelector('#acc-serie').textContent = texteSerie(etat, aujourdhui());
   racine.querySelector('#acc-cours-choix').hidden = true;

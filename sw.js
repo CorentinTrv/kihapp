@@ -16,7 +16,8 @@
 // PWA iPhone rarement fermée garderait l'ancienne version des semaines.
 
 // 23/10/2026 : première version, coquille sans audio.
-const CACHE_NAME = 'kihapp-v1';
+// 26/10/2026 : v2, dépôt intermédiaire avant la refonte (mouvements 7 à 18, Baro, exercices de gestes).
+const CACHE_NAME = 'kihapp-v2';
 
 // ---- DEBUT bloc pur ----
 // Pas d'accès à self ici : sw_test.js extrait ce bloc du texte de ce fichier et
@@ -36,12 +37,14 @@ const FICHIERS_COQUILLE = [
   './animation/geometrie.js',
   './animation/poses.js',
   './animation/rendu.js',
+  './contenu/elements.js',
   './contenu/parcours.js',
   './contenu/sources.js',
   './contenu/taegeuk_il_jang.js',
   './contenu/vocabulaire.js',
   './ecrans/accueil.js',
   './ecrans/fin_lecon.js',
+  './ecrans/gestes.js',
   './ecrans/lecon.js',
   './ecrans/lexique.js',
   './ecrans/poomsae.js',
@@ -50,6 +53,8 @@ const FICHIERS_COQUILLE = [
   './ecrans/sources.js',
   './moteur/aleatoire.js',
   './moteur/dates.js',
+  './moteur/dictee_lecteur.js',
+  './moteur/dictee_plan.js',
   './moteur/exercices.js',
   './moteur/lecon_composer.js',
   './moteur/leitner.js',

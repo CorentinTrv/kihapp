@@ -12,7 +12,7 @@ import { composerLecon } from '../moteur/lecon_composer.js';
 import { pointsFaibles } from '../moteur/parcours_logique.js';
 import { marquerJour } from '../moteur/serie.js';
 import { ecrire, lire } from '../moteur/stockage.js';
-import { VOCABULAIRE } from '../contenu/vocabulaire.js';
+import { ELEMENTS } from '../contenu/elements.js';
 
 /** Faux jusqu'au lot K8 (le son) : aucune leçon ne propose d'exercice d'écoute. */
 const AUDIO_DISPONIBLE = false;
@@ -94,7 +94,7 @@ const tirerGraine = () => Math.floor(Math.random() * 2 ** 32);
  * ou 'points-faibles'.
  */
 export function demarrerLecon(mode, unite = null) {
-  const elements = mode === 'points-faibles' ? pointsFaibles(etat, VOCABULAIRE) : VOCABULAIRE;
+  const elements = mode === 'points-faibles' ? pointsFaibles(etat, ELEMENTS) : ELEMENTS;
   const lecon = composerLecon({
     elements,
     etat,

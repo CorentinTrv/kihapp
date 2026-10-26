@@ -45,7 +45,9 @@
       <h2 id="lecon-consigne" class="consigne"></h2>
       <p id="lecon-question" class="question"></p>
       <p id="lecon-hangeul" class="question-hangeul" lang="ko"></p>
+      <div id="lecon-geste" class="geste-question" hidden></div>
       <div id="lecon-choix" class="choix"></div>
+      <button type="button" id="lecon-verifier" class="bouton principal" hidden disabled>Vérifier</button>
       <p id="lecon-retour" class="retour-reponse" role="status"></p>
       <button type="button" id="lecon-continuer" class="bouton principal" hidden>Continuer</button>
     </section>
@@ -169,10 +171,10 @@
           <section class="panel" aria-label="Carte du sol">
             <h2>Où tu es sur le tracé</h2>
             <p class="note">Vu du plafond, l'avant de la salle en haut. Le tracé reprend le trigramme ☰.</p>
-            <svg id="map" viewBox="0 0 280 250" role="img" aria-label="Carte du sol vue de dessus"></svg>
+            <svg id="map" viewBox="0 0 280 310" role="img" aria-label="Carte du sol vue de dessus"></svg>
           </section>
           <section class="panel" aria-label="Mouvements">
-            <h2>Les six mouvements</h2>
+            <h2 id="mvCount">Les mouvements</h2>
             <ol class="mvs" id="mvList"></ol>
           </section>
         </aside>
@@ -190,7 +192,7 @@
       </section>
 
       <section class="method" aria-label="Consignes du Kukkiwon">
-        <h2>Ce que dit le Kukkiwon pour ces six mouvements</h2>
+        <h2>Ce que dit le Kukkiwon pour les mouvements 1 à 6</h2>
         <p class="src">Vidéo « TAEGEUK 1JANG », chaîne Kukkiwon World Taekwondo Headquarters, 15 mars 2021, 16 min. Nos mouvements 1 à 6 sont sa « part 1 » (de 8:12 à 10:16). Traduit des sous-titres anglais.</p>
         <ul>
           <li><b>Position de départ (Tchoumbi).</b> Pieds joints, puis le pied gauche s'écarte d'une longueur de pied. Inspire en montant les mains ouvertes du bas-ventre au plexus, expire en redescendant les poings au bas-ventre. Coudes pliés comme les angles d'un hexagone, un poing d'écart entre les poings. Ne monte pas les épaules, ne les crispe pas.</li>
@@ -208,7 +210,7 @@
       <div class="tips">
         <div class="tip"><h3>La règle du timing</h3><p>Les bras se préparent pendant tout le trajet du pied. Le blocage ou le coup part à l'instant où le pied touche le sol. « Un » pendant le pas, « deux » à la pose : jamais le coup avant le pied.</p></div>
         <div class="tip"><h3>Les deux bras bougent ensemble</h3><p>Quand un bras bloque ou frappe, l'autre revient à la hanche, poing paume vers le haut. Si un bras reste immobile, il manque la moitié du geste.</p></div>
-        <div class="tip"><h3>Ce qui reste un schéma</h3><p>L'ordre des mouvements, la place des poings et le bras qui remonte devant avant un coup de poing sont relus image par image sur la vidéo du Kukkiwon, et recoupés avec la fiche de la FFTDA. Le bonhomme ne montre ni le poids du corps ni la rotation des hanches : ça, c'est le cours.</p></div>
+        <div class="tip"><h3>Ce qui reste un schéma</h3><p>L'ordre des mouvements, la place des poings et le bras qui remonte devant avant un coup de poing sont relus image par image sur la vidéo du Kukkiwon, et recoupés avec la fiche de la FFTDA. Le bonhomme ne montre ni le poids du corps ni la rotation des hanches : ça, c'est le cours. Sur le tapis, on finit en principe sur son point de départ ; le schéma, qui garde des pas de longueur fixe, finit un peu derrière.</p></div>
       </div>
     </section>
     <section id="dictee" class="ecran" hidden><h2>Dictée</h2></section>

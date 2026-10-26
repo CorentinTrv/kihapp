@@ -23,3 +23,42 @@ export const ARC_L =[-0.14, 0.02, 0.12], ARC_R = [0.14, 0.02, 0.12]; // le bloca
 /* Pieds dans la salle : x vers la droite, z vers l'avant (le jury). a = direction des orteils, 0 = vers l'avant, -90 = vers la gauche. */
 export const P0 = { L: { x: -0.15, z: 0, a: 0 }, R: { x: 0.15, z: 0, a: 0 }, shift: 0, h: 0.88, th: 0, gaze: 0, LH: JUN_L, RH: JUN_R };
 export const KUBI_FEET = { L: { x: -0.10, z: 0.70, a: 0 }, R: { x: 0.15, z: -0.20, a: 30 } };
+
+/* Lot K15 : les poses des mouvements 7 à 18 (blocage intérieur, blocage haut, coup de pied de face).
+   Fichier de données : context/import/taekwondo/2026-10-24_contenu-K15-K16_mouvements-7-a-18.md, §2. */
+
+// Montong An Maki (blocage intérieur), Kukkiwon 5:03 à 5:43.
+// Préparation : le poing qui va bloquer monte sur le côté, environ un poing au-dessus de l'épaule
+// (écran 5:25 « a fist's length above the shoulder »), coude écarté.
+export const AN_PREP_L = [-0.32, 0.64, 0.0];
+// L'autre bras, tendu devant, légèrement fléchi, à hauteur du plexus (écran 5:21).
+export const AN_TENDU_R = [0.04, 0.38, 0.50];
+// Fin : avant-bras devant, poing sur l'axe central, poignet extérieur au niveau du plexus,
+// coude ramené vers le corps (écrans 5:09, 5:17, 5:33).
+export const AN_L = [-0.02, 0.45, 0.32];
+// Le poing balaie de l'extérieur vers le centre, en avançant : arc ajouté pendant la phase C.
+export const ARC_AN_L = [-0.08, 0.0, 0.10];
+
+// Eulgoul Maki (blocage haut), Kukkiwon 5:44 à 6:15 et 12:22 à 13:00.
+// Préparation : bras croisés devant le plexus, le bras qui bloque passe DESSOUS
+// (écran 12:24 « crossing your defending arm from under your supporting arm »).
+export const EULGOUL_DESSOUS_L = [0.10, 0.30, 0.28];
+export const EULGOUL_DESSUS_R = [-0.08, 0.36, 0.32];
+// Fin : avant-bras incliné au-dessus du front, poing plus haut que le coude,
+// un poing d'espace entre le dos du poignet et le front (écrans 6:02 à 6:06, 12:48).
+export const EULGOUL_L = [0.02, 0.80, 0.18];
+
+// Ap Tchagui (coup de pied de face) : les deux poings devant la poitrine pendant le coup de pied
+// (vu 1:49.1 à 1:49.6 ; FFTDA : « les bras se positionnent naturellement devant la poitrine »).
+export const POITRINE_L = [-0.08, 0.36, 0.20];
+// Son miroir : mir(POITRINE_L), comme pour toutes les poses ci-dessus.
+
+// Le coup de pied : deux positions de la cheville du pied qui frappe, dans le repère du corps,
+// depuis le bassin (y négatif = sous le bassin), pour le pied droit ; le gauche est le miroir en x.
+// Armé : genou monté devant, cuisse à peu près horizontale, la jambe part au-dessus du genou
+// de la jambe d'appui (écran 6:24). Cheville à 0,51 m du sol pour un bassin à 0,88 m.
+export const TCHAGUI_ARME_R = [0.09, -0.37, 0.33];
+// Extension : jambe presque tendue vers l'avant, cheville à hauteur de poitrine (1,18 m).
+// La vidéo monte plus haut (au-dessus de la tête à 1:49.4) ; c'est un schéma, la hauteur du coup
+// de pied n'est pas une règle du Taegueug.
+export const TCHAGUI_EXTENSION_R = [0.05, 0.30, 0.72];

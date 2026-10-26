@@ -17,7 +17,7 @@
 import { melanger } from "./aleatoire.js";
 import { genererExercice, typePour } from "./exercices.js";
 import { estDu } from "./leitner.js";
-import { VOCABULAIRE } from "../contenu/vocabulaire.js";
+import { ELEMENTS } from "../contenu/elements.js";
 
 const MIN = 10;
 const MAX = 15;
@@ -28,8 +28,8 @@ const comparer = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 
 /**
  * Compose une leçon. `elements` : le vocabulaire (en mode « points-faibles », la
- * liste des ids à retravailler, dans l'ordre voulu ; le vocabulaire est alors
- * VOCABULAIRE). `etat` n'est jamais modifié.
+ * liste des ids à retravailler, dans l'ordre voulu ; les éléments sont alors
+ * ELEMENTS : le vocabulaire et les mouvements des poomsae). `etat` n'est jamais modifié.
  * `audioDisponible` vaut faux par défaut : sans le dire, pas de bouton d'écoute.
  * Rend { mode, unite, aujourdhui, etat, exercices, rattrapages, decides, court }
  * que noterReponse (exercices.js) fait vivre.
@@ -46,7 +46,7 @@ export function composerLecon({
   if (!MODES.includes(mode)) throw new Error(`Mode de leçon inconnu : ${mode}`);
   if (mode === "unite" && unite === null) throw new Error("Le mode unité demande une unité");
 
-  const voc = mode === "points-faibles" ? VOCABULAIRE : elements;
+  const voc = mode === "points-faibles" ? ELEMENTS : elements;
   const cadre = voc.filter((e) => e.exercice && (unite === null || e.unite === unite));
   const vu = (e) => etat.elements[e.id] !== undefined;
   const parBoite = (a, b) => {
@@ -94,7 +94,7 @@ export function composerLecon({
   // Un rattrapage prêt pour chaque élément : un type encore jamais vu si possible.
   const rattrapages = {};
   for (const e of base) {
-    const type = typePour(e, { b: 2, v: vuesDe(e) }, audioDisponible, types[e.id]) ?? "V1";
+    const type = typePour(e, { b: 2, v: vuesDe(e) }, audioDisponible, types[e.id]) ?? (e.categorie === "mouvement" ? "G1" : "V1");
     rattrapages[e.id] = { ...genererExercice(e, type, options), rattrapage: true, repondu: false };
   }
 

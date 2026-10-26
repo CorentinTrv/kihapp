@@ -32,6 +32,9 @@ const ILLUSTRATIONS = {
   "montong-baro-jileugui": { poomsae: "taegeuk-il-jang", mouvement: "t1-06" },
   "ap-seugui": { poomsae: "taegeuk-il-jang", mouvement: "t1-01" },
   "ap-koubi-seugui": { poomsae: "taegeuk-il-jang", mouvement: "t1-05" },
+  "montong-an-maki": { poomsae: "taegeuk-il-jang", mouvement: "t1-07" },
+  "eulgoul-maki": { poomsae: "taegeuk-il-jang", mouvement: "t1-13" },
+  "ap-tchagui": { poomsae: "taegeuk-il-jang", mouvement: "t1-14" },
 };
 
 // n : numéro du doute, ou null.

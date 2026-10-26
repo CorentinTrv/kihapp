@@ -44,6 +44,27 @@ export function makeProj(f, camera) {
 const polyOf = (P, pts, cls) => `<polygon class="${cls}" points="${pts.map((p) => { const q = P(p); return f1(q[0]) + ',' + f1(q[1]); }).join(' ')}"/>`;
 const segOf = (P, a, b, cls, w, extra = '') => { const pa = P(a), pb = P(b); return `<line class="${cls}" x1="${f1(pa[0])}" y1="${f1(pa[1])}" x2="${f1(pb[0])}" y2="${f1(pb[1])}"${w ? ` stroke-width="${w}"` : ''}${extra}/>`; };
 
+// Où poser le mot « regard » (K14c ; appelé seulement quand le libellé est affiché, `libelle` en est la position). Il se rapporte à la pointe de la flèche, donc il reste tout près d'elle ; mais selon la
+// caméra le libellé « avant de la salle » peut passer au même endroit. On essaie les côtés de la pointe dans l'ordre (à droite,
+// à gauche, au-dessus, en dessous) et on prend le premier où la boîte estimée du mot ne touche pas celle du libellé et tient dans
+// le cadre 600 x 400. Les boîtes sont estimées (pas de mesure de police dans un module pur) : 0,6 em par caractère, la taille de
+// police en hauteur plus un quart de descente, et 4 px de marge autour du libellé. Les tailles sont celles de styles.css.
+const COTES_DU_REGARD = [[14, 4, 'start'], [-14, 4, 'end'], [0, -12, 'middle'], [0, 20, 'middle']];
+const boiteDe = (x, y, texte, taille, ancre) => {
+  const w = texte.length * taille * 0.6, x0 = ancre === 'end' ? x - w : ancre === 'middle' ? x - w / 2 : x;
+  return { x0, x1: x0 + w, y0: y - taille, y1: y + taille / 4 };
+};
+function placerRegard(pointe, libelle) {
+  const lab = boiteDe(libelle[0], libelle[1], 'avant de la salle', 13, 'middle');
+  for (const [dx, dy, ancre] of COTES_DU_REGARD) {
+    const x = pointe[0] + dx, y = pointe[1] + dy, b = boiteDe(x, y, 'regard', 12, ancre); // des nombres : f1 rend du texte
+    const dansLeCadre = b.x0 >= 0 && b.x1 <= 600 && b.y0 >= 0 && b.y1 <= 400;
+    const touche = b.x0 < lab.x1 + 4 && b.x1 > lab.x0 - 4 && b.y0 < lab.y1 + 4 && b.y1 > lab.y0 - 4;
+    if (dansLeCadre && !touche) return { x: f1(x), y: f1(y), ancre };
+  }
+  return { x: f1(pointe[0] + 14), y: f1(pointe[1] + 4), ancre: 'start' }; // aucun côté libre : le test de rendu_test.js prouve que cela n'arrive pas
+}
+
 // Le sol : grille, tracé des pieds, flèche du regard, fantôme du pied, pieds.
 export function floorSvg(f, pr, labels) {
   const { P, anchor } = pr;
@@ -53,7 +74,8 @@ export function floorSvg(f, pr, labels) {
   for (let g = Math.ceil((az - R) * 2) / 2; g <= az + R; g += 0.5) fl += segOf(P, [ax - R, 0, g], [ax + R, 0, g], 'grid');
   fl += segOf(P, [0, 0, -0.35], [0, 0, 1.48], 'mark', 4);
   for (const z of [-0.08, 0.7, 1.48]) fl += segOf(P, [-1.05, 0, z], [1.05, 0, z], 'mark', 9);
-  if (labels) { const fr = P([ax, 0, az + 1.9]); fl += `<text class="lab" x="${f1(fr[0])}" y="${f1(fr[1])}" text-anchor="middle">avant de la salle</text>`; }
+  let libelle = null;
+  if (labels) { const fr = P([ax, 0, az + 1.9]); libelle = fr; fl += `<text class="lab" x="${f1(fr[0])}" y="${f1(fr[1])}" text-anchor="middle">avant de la salle</text>`; }
   // Regard
   const gd = [Math.sin(f.gaze * D), 0, Math.cos(f.gaze * D)];
   const g0 = [f.pel.x + gd[0] * 0.25, 0, f.pel.z + gd[2] * 0.25], g1 = add(g0, mul(gd, 0.9));
@@ -61,7 +83,7 @@ export function floorSvg(f, pr, labels) {
   const on = (f.s.ph === 'B' && f.m && f.m.turn) ? ' on' : '';
   const pg0 = P(g0), pg1 = P(g1);
   fl += `<line class="gz${on}" x1="${f1(pg0[0])}" y1="${f1(pg0[1])}" x2="${f1(pg1[0])}" y2="${f1(pg1[1])}"/>` + arrowHead(pg0, pg1, 12, 'gzh' + on);
-  if (on && labels) { fl += `<text class="labk" x="${f1(pg1[0] + 14)}" y="${f1(pg1[1] + 4)}" text-anchor="start">regard</text>`; }
+  if (on && labels) { const r = placerRegard(pg1, libelle); fl += `<text class="labk" x="${r.x}" y="${r.y}" text-anchor="${r.ancre}">regard</text>`; }
   if (f.ghost) fl += polyOf(P, footPts(f.ghost.x, f.ghost.z, f.ghost.a, 0), f.ghost.k === 'L' ? 'ghostl' : 'ghostr');
   fl += polyOf(P, footPts(f.feet.L.x, f.feet.L.z, f.feet.L.a, f.feet.L.lift), 'footl');
   fl += polyOf(P, footPts(f.feet.R.x, f.feet.R.z, f.feet.R.a, f.feet.R.lift), 'footr');
