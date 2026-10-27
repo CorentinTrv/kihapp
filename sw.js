@@ -19,7 +19,8 @@
 // 26/10/2026 : v2, dépôt intermédiaire avant la refonte (mouvements 7 à 18, Baro, exercices de gestes).
 // 27/10/2026 : v3, la refonte façon Duolingo (Ti, leçon et fin, onglets, accueil, écrans de service, poomsae).
 // 27/10/2026 : v4, fond bleu piscine en clair, textes plus noirs, plus gros et plus gras (choix N1).
-const CACHE_NAME = 'kihapp-v4';
+// 27/10/2026 : v5, le guide d'unité (feuille Pour retenir, Phrases clés, Au dojang, bouton « Guide » de la bannière).
+const CACHE_NAME = 'kihapp-v5';
 
 // ---- DEBUT bloc pur ----
 // Pas d'accès à self ici : sw_test.js extrait ce bloc du texte de ce fichier et
@@ -42,6 +43,7 @@ const FICHIERS_COQUILLE = [
   './animation/poses.js',
   './animation/rendu.js',
   './contenu/elements.js',
+  './contenu/guides.js',
   './contenu/parcours.js',
   './contenu/sources.js',
   './contenu/taegeuk_il_jang.js',
@@ -49,6 +51,7 @@ const FICHIERS_COQUILLE = [
   './ecrans/accueil.js',
   './ecrans/fin_lecon.js',
   './ecrans/gestes.js',
+  './ecrans/guide.js',
   './ecrans/lecon.js',
   './ecrans/lexique.js',
   './ecrans/moi.js',
@@ -61,7 +64,9 @@ const FICHIERS_COQUILLE = [
   './moteur/dates.js',
   './moteur/dictee_lecteur.js',
   './moteur/dictee_plan.js',
+  './moteur/duree.js',
   './moteur/exercices.js',
+  './moteur/guides_vus.js',
   './moteur/lecon_composer.js',
   './moteur/leitner.js',
   './moteur/parcours_logique.js',

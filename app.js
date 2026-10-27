@@ -22,10 +22,16 @@ const ECRAN_PAR_DEFAUT = "accueil";
 
 // L'onglet de chaque écran de la barre ; #lecon et #fin n'en ont pas (la barre y est cachée).
 const ONGLET_DE = {
-  accueil: "accueil", lexique: "accueil", dictee: "accueil",
+  accueil: "accueil", dictee: "accueil",
   poomsae: "poomsae",
   moi: "moi", reglages: "moi", sources: "moi",
 };
+
+// Le Lexique a deux portes (l'accueil et Moi) : son onglet et son chevron de retour sont ceux de l'écran d'où l'on vient.
+// Venu de Moi : Moi. Venu d'ailleurs, ou sans écran d'avant (adresse tapée, rechargement) : l'accueil.
+// Réafficher le Lexique (même ancre) ne change pas l'origine.
+let ecranPrecedent = null;
+let origineLexique = ECRAN_PAR_DEFAUT;
 
 function afficherEcran() {
   const ecrans = [...document.querySelectorAll("main > section[id]")];
@@ -35,17 +41,23 @@ function afficherEcran() {
   if (cible === "fin" && !leconTerminee()) cible = ECRAN_PAR_DEFAUT;
   // L'adresse dit la vérité : sinon, retaper la même ancre ne changerait rien (pas de hashchange).
   if (cible !== demande) history.replaceState(null, "", `#${cible}`);
+  if (cible === "lexique" && ecranPrecedent !== "lexique") origineLexique = ecranPrecedent === "moi" ? "moi" : ECRAN_PAR_DEFAUT;
+  ecranPrecedent = cible;
   for (const e of ecrans) e.hidden = e.id !== cible;
   document.body.dataset.ecran = cible;
+  const ongletCourant = cible === "lexique" ? origineLexique : ONGLET_DE[cible];
   for (const onglet of document.querySelectorAll(".onglets a")) {
-    if (onglet.hash.slice(1) === ONGLET_DE[cible]) onglet.setAttribute("aria-current", "page");
+    if (onglet.hash.slice(1) === ongletCourant) onglet.setAttribute("aria-current", "page");
     else onglet.removeAttribute("aria-current");
   }
   const racine = document.getElementById(cible);
   if (cible === "accueil") afficherAccueil(racine);
   if (cible === "lecon") afficherLecon(racine);
   if (cible === "fin") afficherFin(racine);
-  if (cible === "lexique") afficherLexique(racine);
+  if (cible === "lexique") {
+    racine.querySelector(".lien-retour a").setAttribute("href", `#${origineLexique}`);
+    afficherLexique(racine);
+  }
   if (cible === "moi") afficherMoi(racine);
   if (cible === "sources") afficherSources(racine);
   if (cible === "reglages") afficherReglages(racine);

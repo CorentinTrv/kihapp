@@ -12,7 +12,7 @@ import { ELEMENTS } from '../contenu/elements.js';
 import { UNITES } from '../contenu/parcours.js';
 import { semaineDe, serieCourante, texteSerie } from '../moteur/serie.js';
 import { nomDuMouvement } from './gestes.js';
-import { afficherBandeaux, aujourdhui, creer, etatCourant, leconTerminee } from './session.js';
+import { afficherBandeaux, creer, etatCourant, leconTerminee } from './session.js';
 import { nomDeLaBoite } from './lexique.js';
 import { svgTi } from './ti.js';
 
@@ -89,14 +89,14 @@ function montrer(racine, panneau, avecFin2) {
 export function afficherFin(racine) {
   const terminee = leconTerminee();
   const { justes, total, montes } = resumer(terminee);
-  const jour = aujourdhui();
+  const jour = terminee.jour; // le jour de la leçon, pas celui d'aujourd'hui : l'écran de fin peut être rouvert après minuit
   const avecFin2 = !terminee.avant.jours[jour];
   afficherBandeaux(racine.querySelector('#fin-bandeaux'));
 
   racine.querySelector('#fin-ti').innerHTML = svgTi('reussite', { taille: 156 });
   racine.querySelector('#fin-sous-titre').textContent = sousTitre(terminee.lecon);
   racine.querySelector('#fin-precision-valeur').textContent = `${Math.round((100 * justes) / total)}${ESPACE_INSECABLE}%`;
-  racine.querySelector('#fin-temps-valeur').textContent = formaterDuree(terminee.fin - terminee.debut);
+  racine.querySelector('#fin-temps-valeur').textContent = formaterDuree(terminee.duree);
   racine.querySelector('#fin-score').textContent = `${justes} bonne${s(justes)} réponse${s(justes)} sur ${total}`;
   racine.querySelector('#fin-montes-titre').hidden = montes.length === 0;
   racine.querySelector('#fin-montes').replaceChildren(

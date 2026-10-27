@@ -8,6 +8,8 @@
 
 import { creerAlea } from '../moteur/aleatoire.js';
 import { jourLocal } from '../moteur/dates.js';
+import { cacher, compteurNeuf, montrer, tempsAuPremierPlan } from '../moteur/duree.js';
+import { guidesVus, marquerGuideVu } from '../moteur/guides_vus.js';
 import { composerLecon } from '../moteur/lecon_composer.js';
 import { pointsFaibles } from '../moteur/parcours_logique.js';
 import { marquerJour } from '../moteur/serie.js';
@@ -47,8 +49,22 @@ const magasin = ouvrirMagasin();
 const lu = lire(magasin, aujourdhui());
 let etat = lu.etat;
 let enregistrable = true;
-let courante = null; // { lecon, avant, debut } : la leçon en cours, l'état d'avant la première réponse, l'heure de départ (Date.now())
-let derniere = null; // { lecon, avant, debut, fin } : la leçon qui vient de finir, pour l'écran de fin ; le temps ne va jamais dans le stockage
+let courante = null; // { lecon, avant, debut, pauses } : la leçon en cours, l'état d'avant la première réponse, l'heure de départ (Date.now()), les pauses de l'app cachée (moteur/duree.js)
+let derniere = null; // { lecon, avant, duree, jour } : la leçon qui vient de finir, pour l'écran de fin : son temps au premier plan (ms) et le jour qu'elle a fait compter ; le temps ne va jamais dans le stockage
+
+// Une seule écoute pour toute la vie de la page (pas une par leçon), posée au premier départ de leçon : l'app cachée
+// (écran verrouillé, autre app) n'est pas du temps passé sur la leçon. Sans leçon en cours, elle ne fait rien.
+// Posée à ce moment et non à l'import : ce module se charge aussi dans les tests Deno, qui n'ont pas de document.
+let ecouteVisibilite = false;
+function ecouterLaVisibilite() {
+  if (ecouteVisibilite) return;
+  ecouteVisibilite = true;
+  document.addEventListener('visibilitychange', () => {
+    if (courante === null) return;
+    const t = Date.now();
+    courante.pauses = document.visibilityState === 'hidden' ? cacher(courante.pauses, t) : montrer(courante.pauses, t);
+  });
+}
 
 /** L'état courant de l'élève. */
 export const etatCourant = () => etat;
@@ -104,7 +120,8 @@ export function demarrerLecon(mode, unite = null) {
     unite,
     audioDisponible: AUDIO_DISPONIBLE,
   });
-  courante = { lecon, avant: etat, debut: Date.now() };
+  ecouterLaVisibilite();
+  courante = { lecon, avant: etat, debut: Date.now(), pauses: compteurNeuf() };
 }
 
 /** La leçon en cours, ou null. */
@@ -121,12 +138,23 @@ export function quitterLecon() {
   courante = null;
 }
 
-/** Fin de la leçon : le jour compte, puis la leçon passe à l'écran de fin. */
+/**
+ * Fin de la leçon : le jour compte, puis la leçon passe à l'écran de fin. Le jour est calculé UNE fois et gardé :
+ * l'écran de fin, rouvert après minuit, parle toujours du jour que la leçon a fait compter.
+ */
 export function terminerLecon() {
-  derniere = { ...courante, fin: Date.now() };
+  const { lecon, avant, debut, pauses } = courante;
+  const jour = aujourdhui();
+  derniere = { lecon, avant, duree: tempsAuPremierPlan(debut, Date.now(), pauses), jour };
   courante = null;
-  enregistrer(marquerJour(derniere.lecon.etat, aujourdhui(), 'l'));
+  enregistrer(marquerJour(lecon.etat, jour, 'l'));
 }
 
-/** La leçon qui vient de finir : { lecon, avant, debut, fin }, ou null. */
+/** La leçon qui vient de finir : { lecon, avant, duree, jour }, ou null. */
 export const leconTerminee = () => derniere;
+
+/** Le guide de cette unité a-t-il déjà été lu ? Mémoire à part de l'état sauvegardé (moteur/guides_vus.js). */
+export const guideDejaVu = (unite) => guidesVus(magasin).has(unite);
+
+/** Note ce guide comme lu (« C'est parti » touché). Ne lève jamais. */
+export const noterGuideVu = (unite) => marquerGuideVu(magasin, unite);

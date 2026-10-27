@@ -18,8 +18,9 @@
 :root {
   /* fonds et texte */
   --k-fond: #FFFFFF; --k-surface: #95C4EE; --k-trait: #7FB4E4; --k-texte: #0B0F19; --k-texte2: #1F2633;
-  /* lot fond N1 : --k-page peint la page, --k-onglets la barre du bas ; --k-fond reste blanc, c'est la couleur des cartes */
-  --k-page: #A8D8FF; --k-onglets: #8CC8FF;
+  /* lot fond N1 : --k-page peint la page ; --k-fond reste blanc, c'est la couleur des cartes. --k-onglets peint les deux bandes,
+     l'en-tête de l'accueil et la barre du bas (blanches en clair) ; --k-haut-trait est le trait sous l'en-tête de l'accueil */
+  --k-page: #A8D8FF; --k-onglets: #FFFFFF; --k-haut-trait: var(--k-trait);
   /* la barre d'onglets : texte, onglet actif (texte, pastille, icône, bord de la pastille) ; le mode sombre redéclare les cinq */
   --k-onglet-texte: var(--k-texte); --k-onglet-actif-texte: var(--k-texte);
   --k-onglet-pastille: var(--k-id); --k-onglet-icone: var(--k-id-sur); --k-onglet-bord: var(--k-id-relief);
@@ -60,7 +61,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --k-fond: #14121C; --k-surface: #1F1C2B; --k-trait: #34304A; --k-texte: #F3F1FA; --k-texte2: #A9A3BD;
-    --k-page: #14121C; --k-onglets: #14121C;
+    --k-page: #14121C; --k-onglets: #14121C; --k-haut-trait: var(--k-surface);
     --k-onglet-texte: var(--k-texte2); --k-onglet-actif-texte: var(--k-id-texte);
     --k-onglet-pastille: var(--k-id-doux); --k-onglet-icone: var(--k-id); --k-onglet-bord: var(--k-id-bord);
     --k-id: #FF8A3D; --k-id-relief: #C2620F; --k-id-sur: #14121C; --k-id-doux: #3A2416; --k-id-texte: #FFA366; --k-id-bord: #7A3E14;
@@ -312,7 +313,7 @@ main {
 #accueil { padding-top: 0; }
 .acc-haut {
   display: flex; align-items: center; justify-content: space-between;
-  height: 56px; margin: 0 -16px; padding: 0 16px; border-bottom: 2px solid var(--k-surface);
+  height: 56px; margin: 0 -16px; padding: 0 16px; background: var(--k-onglets); border-bottom: 2px solid var(--k-haut-trait);
 }
 .acc-haut-ceinture { display: flex; align-items: center; gap: 8px; font: 900 19px/1 var(--k-police); }
 .acc-ceinture-icone rect { fill: var(--k-ti); stroke: var(--k-ti-trait); stroke-width: 2; }
@@ -378,6 +379,61 @@ main {
 .acc-lexique:focus-visible { outline: 2px solid var(--k-id); outline-offset: 2px; }
 .acc-lexique svg { color: var(--k-texte2); }
 .carte-perte { margin: 8px 0 0; padding: 12px 14px; font-size: 16px; color: var(--k-texte2); background: var(--k-fond); border: 1px solid var(--k-trait); border-radius: 12px; }
+
+/* Le guide d'unité (lot guide, d'après E2-Guide). Le bouton « Guide » de la bannière : une tuile translucide à contour clair,
+   en 19 px gras (le texte blanc sur la bannière translucide ne fait que 4,2:1 : c'est le seuil du texte large, 3:1, qui s'applique). */
+.acc-banniere-guide {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; justify-self: start;
+  min-height: var(--k-tactile); margin-top: 10px; padding: 0 18px;
+  font: 900 19px/1 var(--k-police); color: var(--k-banniere-texte); background: var(--k-banniere-bouton);
+  border: 2px solid var(--k-banniere-bord); border-radius: var(--k-rayon-tuile); cursor: pointer;
+}
+.acc-banniere-guide:focus-visible { outline: 2px solid var(--k-banniere-texte); outline-offset: 2px; }
+
+/* La feuille : un <dialog> modal posé en bas, qui laisse voir le haut du chemin (118 px, comme la maquette) ; l'en-tête et le
+   « C'est parti » restent en place, le contenu défile entre les deux. Pendant qu'elle est ouverte, la page derrière ne défile pas.
+   Le voile est --k-voile : un navigateur trop ancien pour hériter des variables jusqu'au ::backdrop n'en montre pas, la feuille marche quand même. */
+.guide-feuille[open] {
+  display: flex; flex-direction: column;
+  width: 100%; max-width: 40rem; margin: auto auto 0; padding: 0; overflow: hidden;
+  max-height: calc(100vh - 118px); max-height: calc(100dvh - 118px);
+  color: var(--k-texte); background: var(--k-fond); border: 0; border-radius: var(--k-rayon-carte) var(--k-rayon-carte) 0 0;
+}
+.guide-feuille::backdrop { background: var(--k-voile); }
+.guide-feuille[open]::before { content: ""; flex: none; align-self: center; width: 40px; height: 5px; margin-top: 10px; background: var(--k-trait); border-radius: 3px; }
+body:has(.guide-feuille[open]) { overflow: hidden; }
+
+.guide-entete { display: flex; flex: none; align-items: flex-start; gap: 12px; padding: 12px 20px 0; }
+.guide-titres { display: grid; flex: 1; gap: 2px; min-width: 0; }
+.guide-rang { margin: 0; font: var(--k-t-etiquette); letter-spacing: .06em; text-transform: uppercase; color: var(--k-id-texte); }
+.guide-feuille .guide-titre { margin: 0; font: 900 29px/1.15 var(--k-police); color: var(--k-texte); overflow-wrap: anywhere; }
+/* La croix de la relecture : 44 px de zone, un peu tirée vers le bord. */
+.guide-croix {
+  display: inline-flex; flex: none; align-items: center; justify-content: center;
+  width: var(--k-tactile); height: var(--k-tactile); margin-right: -8px; padding: 0;
+  color: var(--k-texte2); background: var(--k-surface); border: 0; border-radius: 50%; cursor: pointer;
+}
+.guide-croix:focus-visible { outline: 2px solid var(--k-id); outline-offset: 2px; }
+
+.guide-defile { flex: 1 1 auto; min-height: 0; padding: 0 20px 20px; overflow-y: auto; overscroll-behavior: contain; }
+/* Sans « C'est parti » en bas (la relecture), le contenu respecte lui-même la zone sûre. */
+.guide-feuille:not(:has(.guide-pied)) .guide-defile { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+.guide-bloc { margin-top: 22px; }
+.guide-bloc-titre { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font: 900 22px/1.2 var(--k-police); color: var(--k-texte); }
+.guide-icone { display: inline-flex; flex: none; color: var(--k-id-texte); }
+.guide-astuces, .guide-faits, .guide-phrases { margin: 0; padding: 0; list-style: none; }
+.guide-astuces, .guide-faits { display: grid; gap: 10px; }
+.guide-astuces li, .guide-faits li { position: relative; padding-left: 18px; font: var(--k-t-courant); color: var(--k-texte2); }
+.guide-astuces li::before, .guide-faits li::before { content: ""; position: absolute; left: 0; top: .55em; width: 8px; height: 8px; background: var(--k-id-bord); border-radius: 50%; }
+.guide-phrase { display: grid; gap: 2px; padding: 8px 0; }
+.guide-nom { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; font: 900 21px/1.2 var(--k-police); color: var(--k-texte); overflow-wrap: anywhere; }
+.guide-ko { font: 800 17px/1.2 var(--k-police); color: var(--k-texte2); }
+.guide-fr { font: var(--k-t-courant); color: var(--k-texte2); }
+/* Le lien vers le poomsae a l'habit du lien Lexique (.acc-lexique) ; ici seulement la place qui lui manque. */
+.guide-lien { margin-top: 22px; }
+
+.guide-pied { flex: none; padding: 12px 20px calc(16px + env(safe-area-inset-bottom)); background: var(--k-fond); border-top: 2px solid var(--k-surface); }
+.guide-pied .bouton { width: 100%; }
 
 .lecon-tete { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .lecon-tete .barre { flex: 1; }
