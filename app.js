@@ -1,21 +1,31 @@
-// Kihapp, app.js (lots K1, K13, K6, K9 et K10) : le routeur par ancre, puis le service worker.
+// Kihapp, app.js (lots K1, K13, K6, K9, K10 et R7a) : le routeur par ancre, puis le service worker.
 // Montre la section d'écran dont l'id égale l'ancre, masque les autres.
 // Une ancre vide ou inconnue ramène à #accueil.
 // L'écran #poomsae anime en continu : on le lance quand il s'affiche et on
 // l'arrête dès qu'on le quitte (sinon la boucle d'animation tourne pour rien).
 // #lecon et #fin n'ont de sens qu'avec une leçon en cours ou qui vient de
 // finir : sans elle (adresse tapée, rechargement), retour à l'accueil.
+// R7a : le corps de la page porte l'écran montré (data-ecran, que styles.css lit pour cacher la barre
+// d'onglets pendant une leçon et sur la fin), et la barre marque d'un aria-current l'onglet de cet écran.
 
 import { afficherAccueil } from "./ecrans/accueil.js";
 import { afficherFin } from "./ecrans/fin_lecon.js";
 import { afficherLecon } from "./ecrans/lecon.js";
 import { afficherLexique } from "./ecrans/lexique.js";
+import { afficherMoi } from "./ecrans/moi.js";
 import { arreterPoomsae, initialiserPoomsae } from "./ecrans/poomsae.js";
 import { afficherReglages } from "./ecrans/reglages.js";
 import { leconCourante, leconTerminee } from "./ecrans/session.js";
 import { afficherSources } from "./ecrans/sources.js";
 
 const ECRAN_PAR_DEFAUT = "accueil";
+
+// L'onglet de chaque écran de la barre ; #lecon et #fin n'en ont pas (la barre y est cachée).
+const ONGLET_DE = {
+  accueil: "accueil", lexique: "accueil", dictee: "accueil",
+  poomsae: "poomsae",
+  moi: "moi", reglages: "moi", sources: "moi",
+};
 
 function afficherEcran() {
   const ecrans = [...document.querySelectorAll("main > section[id]")];
@@ -26,11 +36,17 @@ function afficherEcran() {
   // L'adresse dit la vérité : sinon, retaper la même ancre ne changerait rien (pas de hashchange).
   if (cible !== demande) history.replaceState(null, "", `#${cible}`);
   for (const e of ecrans) e.hidden = e.id !== cible;
+  document.body.dataset.ecran = cible;
+  for (const onglet of document.querySelectorAll(".onglets a")) {
+    if (onglet.hash.slice(1) === ONGLET_DE[cible]) onglet.setAttribute("aria-current", "page");
+    else onglet.removeAttribute("aria-current");
+  }
   const racine = document.getElementById(cible);
   if (cible === "accueil") afficherAccueil(racine);
   if (cible === "lecon") afficherLecon(racine);
   if (cible === "fin") afficherFin(racine);
   if (cible === "lexique") afficherLexique(racine);
+  if (cible === "moi") afficherMoi(racine);
   if (cible === "sources") afficherSources(racine);
   if (cible === "reglages") afficherReglages(racine);
   if (cible === "poomsae") initialiserPoomsae(racine);

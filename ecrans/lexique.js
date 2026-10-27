@@ -20,16 +20,23 @@ export function nomDeLaBoite(boite) {
   return boite === 2 ? 'Bien parti' : 'À revoir';
 }
 
+// Une ligne (lot R8, d'après E2-Lexique) : sur la première ligne la graphie FFTDA, le hangeul et, si le mot est
+// interrogé, l'étiquette de sa boîte ; dessous le français. Les boîtes 1 et 2 (nomDeLaBoite dit « À revoir » et
+// « Bien parti ») portent la classe « fragile » : la couleur se choisit sur la boîte, jamais sur le texte.
 function ligneMot(mot, etat) {
   const li = creer('li', 'lex-mot');
   const nom = creer('span', 'lex-nom');
-  nom.append(creer('span', 'lex-fftda', mot.fftda), creer('span', 'lex-fr', mot.fr));
   const ko = creer('span', 'lex-ko', mot.hangeul);
   ko.lang = 'ko';
-  li.append(nom, ko);
+  nom.append(creer('span', 'lex-fftda', mot.fftda), ko);
   // Un mot de famille n'est jamais interrogé : aucune boîte à lui donner.
   // Jamais répondu : « Pas encore vu ».
-  if (mot.exercice) li.append(creer('span', 'lex-boite', etat.elements[mot.id] ? nomDeLaBoite(etat.elements[mot.id].b) : 'Pas encore vu'));
+  if (mot.exercice) {
+    const suivi = etat.elements[mot.id];
+    const fragile = suivi && !(suivi.b >= 3);
+    nom.append(creer('span', fragile ? 'lex-boite fragile' : 'lex-boite', suivi ? nomDeLaBoite(suivi.b) : 'Pas encore vu'));
+  }
+  li.append(nom, creer('span', 'lex-fr', mot.fr));
   return li;
 }
 

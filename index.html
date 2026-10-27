@@ -6,7 +6,8 @@
   <title>Kihapp</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
-  <meta name="theme-color" content="#18202e">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14121C" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="styles.css">
   <script type="module" src="app.js"></script>
 </head>
@@ -14,70 +15,143 @@
   <header class="entete"><h1>Kihapp</h1></header>
   <main>
     <section id="accueil" class="ecran">
+      <div class="acc-haut">
+        <span id="acc-haut-ceinture" class="acc-haut-ceinture"><svg class="acc-ceinture-icone" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false"><rect x="2" y="12" width="28" height="7" rx="3"/><rect x="12" y="10" width="8" height="11" rx="2"/><path d="M13 21 L10 29 M19 21 L22 29" fill="none" stroke-width="3" stroke-linecap="round"/></svg>Blanche</span>
+        <span id="acc-haut-serie" class="acc-haut-serie" role="img"><svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true" focusable="false"><path class="fin-flamme-corps" d="M16 3 C18 10 25 12 25 19 A9 9 0 0 1 7 19 C7 14 11 12 11 8 C13 10 14 11 16 3 Z"/><path class="fin-flamme-coeur" d="M16 15 C17 18 20 19 20 22 A4 4 0 0 1 12 22 C12 19 15 18 16 15 Z"/></svg><span id="acc-haut-nombre"></span></span>
+      </div>
       <div id="acc-bandeaux"></div>
       <h2 id="acc-ceinture" class="ceinture"></h2>
+      <div id="acc-banniere" class="acc-banniere"></div>
       <ul id="acc-unites" class="unites"></ul>
       <div id="acc-actions" class="actions"></div>
-      <p id="acc-serie" class="serie"></p>
       <div class="cours">
+        <p id="acc-serie" class="serie"></p>
         <button type="button" id="acc-cours" class="bouton">J'étais au cours</button>
         <div id="acc-cours-choix" class="cours-choix" hidden>
           <button type="button" class="bouton" data-jour="aujourdhui">Aujourd'hui</button>
           <button type="button" class="bouton" data-jour="hier">Hier</button>
         </div>
       </div>
-      <p class="lien-poomsae"><a href="#poomsae">Taegueug Il Jang</a></p>
-      <nav class="liens-service" aria-label="Lexique, sources et réglages">
-        <a href="#lexique">Lexique</a>
-        <a href="#sources">Sources</a>
-        <a href="#reglages">Réglages</a>
+      <a id="acc-lexique" class="acc-lexique" href="#lexique"><span>Lexique</span><svg viewBox="0 0 32 32" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 7 L21 16 L12 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </section>
+    <section id="moi" class="ecran" hidden>
+      <div class="moi-tete">
+        <span id="moi-ti" class="moi-ti"></span>
+        <div class="moi-tete-texte">
+          <h2 id="moi-ceinture">Ceinture blanche, vers la jaune</h2>
+          <div class="moi-progression">
+            <span id="moi-barre" class="barre moi-barre" role="progressbar" aria-label="Progression vers la ceinture jaune" aria-valuemin="0"><span class="barre-rempli"></span></span>
+            <span id="moi-unite" class="moi-unite"></span>
+          </div>
+        </div>
+      </div>
+      <nav class="liens-service" aria-label="Réglages et ressources">
+        <p id="moi-etiquette-reglages" class="moi-etiquette">Réglages</p>
+        <ul class="moi-lignes" aria-labelledby="moi-etiquette-reglages">
+          <li><a id="moi-rythme" href="#reglages"><span class="moi-ligne-titre">Rythme de la dictée</span><span class="moi-ligne-fin"><span id="moi-rythme-valeur"></span><svg viewBox="0 0 32 32" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 7 L21 16 L12 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></li>
+          <li><a id="moi-code" href="#reglages"><span class="moi-ligne-titre">Code de sauvegarde</span><span class="moi-ligne-fin"><svg viewBox="0 0 32 32" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 7 L21 16 L12 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></li>
+        </ul>
+        <p id="moi-etiquette-ressources" class="moi-etiquette">Ressources</p>
+        <ul class="moi-lignes" aria-labelledby="moi-etiquette-ressources">
+          <li><a id="moi-lexique" href="#lexique"><span class="moi-ligne-titre">Lexique</span><span class="moi-ligne-fin"><svg viewBox="0 0 32 32" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 7 L21 16 L12 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></li>
+          <li><a id="moi-sources" href="#sources"><span class="moi-ligne-titre">Sources et doutes</span><span class="moi-ligne-fin"><svg viewBox="0 0 32 32" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 7 L21 16 L12 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></li>
+        </ul>
       </nav>
+      <p id="moi-phrase" class="moi-phrase">L'app prépare, le professeur corrige.</p>
       <p class="carte-perte">Ta progression reste sur ce téléphone, sans compte. Si tu changes de téléphone ou effaces les données du navigateur, elle est perdue. Installe Kihapp sur l'écran d'accueil, et copie ton code de sauvegarde de temps en temps.</p>
-      <p class="lien-copier"><a href="#reglages" id="acc-copier-code" class="bouton">Copier mon code</a></p>
     </section>
     <section id="lecon" class="ecran" hidden>
       <div class="lecon-tete">
-        <button type="button" id="lecon-quitter" class="bouton">Quitter</button>
+        <button type="button" id="lecon-quitter" class="lecon-croix" aria-label="Quitter la leçon"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
         <span id="lecon-barre" class="barre" role="progressbar" aria-label="Avancée de la leçon" aria-valuemin="0"><span class="barre-rempli"></span></span>
         <span id="lecon-compte" class="lecon-compte"></span>
       </div>
-      <p id="lecon-rattrapage" class="rattrapage" hidden>On le revoit</p>
+      <p id="lecon-nouveau" class="etiquette nouveau" hidden>Nouveau</p>
+      <p id="lecon-rattrapage" class="etiquette rattrapage" hidden>On le revoit</p>
       <h2 id="lecon-consigne" class="consigne"></h2>
-      <p id="lecon-question" class="question"></p>
-      <p id="lecon-hangeul" class="question-hangeul" lang="ko"></p>
+      <div id="lecon-mot" class="lecon-mot">
+        <span id="lecon-ti" class="lecon-ti"></span>
+        <div class="carte-mot">
+          <p id="lecon-question" class="question"></p>
+          <p id="lecon-hangeul" class="question-hangeul" lang="ko"></p>
+        </div>
+      </div>
       <div id="lecon-geste" class="geste-question" hidden></div>
       <div id="lecon-choix" class="choix"></div>
       <button type="button" id="lecon-verifier" class="bouton principal" hidden disabled>Vérifier</button>
-      <p id="lecon-retour" class="retour-reponse" role="status"></p>
-      <button type="button" id="lecon-continuer" class="bouton principal" hidden>Continuer</button>
+      <div id="lecon-correction" class="correction" hidden>
+        <span class="correction-pastille" aria-hidden="true">
+          <svg class="pastille-coche" viewBox="0 0 24 24" width="22" height="22" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="pastille-croix" viewBox="0 0 24 24" width="22" height="22" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg>
+        </span>
+        <p id="lecon-retour" class="correction-titre" role="status"></p>
+        <p id="lecon-retour-detail" class="correction-detail"></p>
+        <button type="button" id="lecon-continuer" class="bouton principal" aria-describedby="lecon-retour lecon-retour-detail" hidden>Continuer</button>
+      </div>
     </section>
     <section id="fin" class="ecran" hidden>
       <div id="fin-bandeaux"></div>
-      <h2>Fin de leçon</h2>
-      <p id="fin-score" class="score"></p>
-      <p id="fin-montes-titre" class="montes-titre" hidden>Tu as fait avancer :</p>
-      <ul id="fin-montes" class="montes"></ul>
-      <p id="fin-serie" class="serie"></p>
-      <p><a href="#accueil" class="bouton principal">Retour à l'accueil</a></p>
+      <div id="fin-1" class="fin-panneau">
+        <div id="fin-ti" class="fin-ti"></div>
+        <h2 id="fin-titre">Leçon finie !</h2>
+        <p id="fin-sous-titre" class="fin-sous-titre"></p>
+        <div class="fin-cartes">
+          <div id="fin-precision" class="fin-carte juste">
+            <p class="fin-etiquette">Précision</p>
+            <p class="fin-valeur"><svg viewBox="0 0 32 32" width="20" height="20" aria-hidden="true" focusable="false"><circle class="fin-pastille-fond" cx="16" cy="16" r="13"/><path class="fin-pastille-coche" d="M10 16 L14 20 L22 11" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="fin-precision-valeur"></span></p>
+          </div>
+          <div id="fin-temps" class="fin-carte">
+            <p class="fin-etiquette">Temps</p>
+            <p class="fin-valeur"><svg class="fin-chrono" viewBox="0 0 32 32" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="16" cy="17" r="11" stroke-width="3"/><path d="M16 11 V17 L20 20 M13 3 H19" stroke-width="3" stroke-linecap="round"/></svg><span id="fin-temps-valeur"></span></p>
+          </div>
+        </div>
+        <p id="fin-score" class="score"></p>
+        <p id="fin-montes-titre" class="montes-titre" hidden>Tu as fait avancer :</p>
+        <ul id="fin-montes" class="montes"></ul>
+      </div>
+      <div id="fin-2" class="fin-panneau" hidden>
+        <svg class="fin-flamme" viewBox="0 0 32 32" width="96" height="96" aria-hidden="true" focusable="false"><path class="fin-flamme-corps" d="M16 3 C18 10 25 12 25 19 A9 9 0 0 1 7 19 C7 14 11 12 11 8 C13 10 14 11 16 3 Z"/><path class="fin-flamme-coeur" d="M16 15 C17 18 20 19 20 22 A4 4 0 0 1 12 22 C12 19 15 18 16 15 Z"/></svg>
+        <div id="fin-serie-titre" class="fin-serie-titre" tabindex="-1">
+          <p id="fin-serie-chiffre"></p>
+          <p id="fin-serie-mot"></p>
+        </div>
+        <div class="fin-semaine-carte">
+          <ul id="fin-semaine" class="fin-semaine" role="list"></ul>
+          <p id="fin-cours" class="fin-cours" hidden><span class="fin-cours-pastille"></span>Cours au club : ça compte.</p>
+        </div>
+        <p class="fin-note">Une leçon par jour suffit.</p>
+        <p id="fin-serie"></p>
+      </div>
+      <div class="fin-pied">
+        <div id="fin-points" class="fin-points" aria-hidden="true"><span class="fin-point courant"></span><span class="fin-point"></span></div>
+        <button type="button" id="fin-suite" class="bouton principal">Continuer</button>
+        <a href="#accueil" id="fin-accueil" class="bouton principal">Continuer</a>
+      </div>
     </section>
     <section id="lexique" class="ecran" hidden>
-      <p class="lien-retour"><a href="#accueil">← Accueil</a></p>
-      <h2>Lexique</h2>
+      <div class="tete-service">
+        <p class="lien-retour"><a href="#accueil" aria-label="Retour"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false"><path d="M20 7 L11 16 L20 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+        <h2>Lexique</h2>
+      </div>
       <div id="lex-groupes"></div>
     </section>
     <section id="sources" class="ecran" hidden>
-      <p class="lien-retour"><a href="#accueil">← Accueil</a></p>
-      <h2>Sources</h2>
+      <div class="tete-service">
+        <p class="lien-retour"><a href="#moi" aria-label="Retour"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false"><path d="M20 7 L11 16 L20 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+        <h2>Sources</h2>
+      </div>
       <ul id="src-documents" class="src-liste"></ul>
       <h3>Les doutes</h3>
       <p class="reglage-aide">Là où les sources se contredisent ou ne disent pas tout.</p>
       <ol id="src-doutes" class="src-liste"></ol>
-      <p class="src-phrase">Kihapp prépare, le professeur corrige.</p>
+      <p class="src-phrase">L'app prépare, le professeur corrige.</p>
       <p>Tu vois une erreur ? Dis-le à Corentin au club.</p>
     </section>
     <section id="reglages" class="ecran" hidden>
-      <p class="lien-retour"><a href="#accueil">← Accueil</a></p>
-      <h2>Réglages</h2>
+      <div class="tete-service">
+        <p class="lien-retour"><a href="#moi" aria-label="Retour"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false"><path d="M20 7 L11 16 L20 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+        <h2>Réglages</h2>
+      </div>
       <div class="reglage">
         <h3>Ma sauvegarde</h3>
         <p class="reglage-aide">Le code garde ta progression. Colle-le sur un autre téléphone pour la retrouver.</p>
@@ -112,14 +186,14 @@
       <p id="reg-version" class="version"></p>
     </section>
     <section id="poomsae" class="ecran" hidden>
-      <p class="retour"><a href="#accueil">← Accueil</a></p>
+      <p class="retour lien-retour"><a href="#accueil" aria-label="Retour"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false"><path d="M20 7 L11 16 L20 25" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
       <header>
-        <div class="eyebrow">Taekwondo · premier poomsae · mouvements 1 à 6</div>
         <h2 class="titre">Taegueug Il Jang <span class="tri" aria-hidden="true">☰</span><span class="ko">태극 1장</span></h2>
+        <div class="eyebrow"><svg viewBox="0 0 32 32" width="18" height="18" aria-hidden="true" focusable="false"><path d="M16 4 A8 8 0 0 0 11 18 V22 H21 V18 A8 8 0 0 0 16 4 Z M12 26 H20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Écrit 1<span lang="ko">장</span>, se dit il-jang (<span lang="ko">일장</span>).</span></div>
         <p class="lede">Comme dans le miroir du dojang : le bonhomme est face à toi et son bras gauche est à ta gauche. Pour chaque mouvement, les images fixes (avant, préparation, fin), l'animation entre les deux, et des flèches qui montrent le chemin de chaque poing. Les gestes et les consignes viennent de la vidéo officielle du Kukkiwon.</p>
         <div class="legend" aria-label="Légende">
-          <span><i class="sw l"></i>bras et jambe gauches</span>
-          <span><i class="sw r"></i>bras et jambe droits</span>
+          <span class="cote-gauche"><i class="sw l"></i>Gauche</span>
+          <span class="cote-droite"><i class="sw r"></i>Droite</span>
           <span><i class="sw dash"></i>flèche : le chemin que suit le poing ou le pied</span>
           <span>pointillés au sol : là où le pied va se poser</span>
         </div>
@@ -215,6 +289,11 @@
     </section>
     <section id="dictee" class="ecran" hidden><h2>Dictée</h2></section>
   </main>
+  <nav class="onglets" aria-label="Onglets">
+    <a href="#accueil"><span class="onglet-pastille"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false"><path d="M6 15 L16 6 L26 15 V26 H19 V19 H13 V26 H6 Z" fill="currentColor"/></svg></span>Apprendre</a>
+    <a href="#poomsae"><span class="onglet-pastille"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false"><circle cx="16" cy="6" r="3.5" fill="currentColor"/><path d="M16 10 V19 M16 13 L7 10 M16 13 L25 16 M16 19 L10 28 M16 19 L22 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>Poomsae</a>
+    <a href="#moi"><span class="onglet-pastille"><svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true" focusable="false"><circle cx="16" cy="11" r="5.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 27 Q6 19 16 19 Q26 19 26 27" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>Moi</a>
+  </nav>
   <div id="maj-bandeau" class="maj-bandeau" role="status" hidden>
     <p class="maj-texte">Nouvelle version prête</p>
     <button type="button" id="maj-bouton" class="bouton principal">Mettre à jour</button>

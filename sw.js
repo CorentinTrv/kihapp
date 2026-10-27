@@ -17,7 +17,8 @@
 
 // 23/10/2026 : première version, coquille sans audio.
 // 26/10/2026 : v2, dépôt intermédiaire avant la refonte (mouvements 7 à 18, Baro, exercices de gestes).
-const CACHE_NAME = 'kihapp-v2';
+// 27/10/2026 : v3, la refonte façon Duolingo (Ti, leçon et fin, onglets, accueil, écrans de service, poomsae).
+const CACHE_NAME = 'kihapp-v3';
 
 // ---- DEBUT bloc pur ----
 // Pas d'accès à self ici : sw_test.js extrait ce bloc du texte de ce fichier et
@@ -32,6 +33,8 @@ const FICHIERS_COQUILLE = [
   './styles.css',
   './app.js',
   './manifest.json',
+  './polices/nunito-latin-wght-normal.woff2',
+  './polices/OFL.txt',
   './animation/carte.js',
   './animation/chronologie.js',
   './animation/geometrie.js',
@@ -47,10 +50,12 @@ const FICHIERS_COQUILLE = [
   './ecrans/gestes.js',
   './ecrans/lecon.js',
   './ecrans/lexique.js',
+  './ecrans/moi.js',
   './ecrans/poomsae.js',
   './ecrans/reglages.js',
   './ecrans/session.js',
   './ecrans/sources.js',
+  './ecrans/ti.js',
   './moteur/aleatoire.js',
   './moteur/dates.js',
   './moteur/dictee_lecteur.js',

@@ -1,25 +1,28 @@
-// Kihapp, ecrans/lecon.js (lots K6 puis K19b) : l'écran #lecon, sans son.
-// Une question à la fois : quatre réponses, correction immédiate, « Continuer ».
+// Kihapp, ecrans/lecon.js (lots K6, K19b, R4 puis R5) : l'écran #lecon, sans son.
+// Une question à la fois : quatre réponses, correction immédiate dans un bandeau collé en bas
+// (un titre, la réponse en entier, « Continuer » ou « Compris »).
 // Depuis K19b l'écran montre aussi les exercices de gestes (G1 à G4, voir gestes.js) :
-// la boucle animée de G1, les images fixes de G4 et G2, la remise en ordre de G3.
+// la boucle animée de G1 (avec son bouton Rejouer), les images fixes de G4 et G2, la
+// remise en ordre de G3 (quatre places en colonne, une tuile avec son nom par geste).
 //
 // L'ordre est ce qui compte (un banc Chromium le garde) :
 //   1. au premier toucher, TOUS les boutons se désactivent (un double toucher ne
 //      compte qu'une fois : noterReponse refuse aussi un second appel) ;
 //   2. noterReponse met la leçon à jour ;
 //   3. enregistrer(...) tout de suite : un iPhone peut tuer la PWA sans prévenir ;
-//   4. la correction s'affiche.
+//   4. la correction s'affiche (le bandeau, Ti, la réserve de place en bas).
 // Après le dernier exercice (les rattrapages sont ajoutés en fin de leçon par
 // noterReponse, donc le total peut grandir), le jour est marqué et l'écran de
 // fin s'ouvre.
-// Un G3 se joue en deux temps : les images se rangent une à une dans la ligne
-// numérotée, puis « Vérifier » envoie la suite touchée à noterReponse, avec le
+// Un G3 se joue en deux temps : les tuiles se rangent une à une dans les places
+// numérotées, puis « Vérifier » envoie la suite touchée à noterReponse, avec le
 // même ordre en quatre temps.
 
 import { VOCABULAIRE } from '../contenu/vocabulaire.js';
 import { noterReponse } from '../moteur/exercices.js';
-import { blocNom, boutonImage, boutonNom, cadreEnBoucle, imageDuGeste, nomDuMouvement } from './gestes.js';
-import { creer, enregistrer, leconCourante, quitterLecon, terminerLecon } from './session.js';
+import { blocNom, boutonImage, boutonNom, boutonOrdre, cadreEnBoucle, imageDuGeste, nomDuMouvement } from './gestes.js';
+import { svgTi } from './ti.js';
+import { creer, enregistrer, estNouveauDansLaLecon, leconCourante, quitterLecon, terminerLecon } from './session.js';
 
 // Les exercices d'écoute (V3, V4) n'existent pas sans son : ils n'ont pas de consigne ici.
 const CONSIGNES = {
@@ -35,14 +38,17 @@ let racineBranchee = null;
 let affichee = null; // la leçon dont on montre un exercice
 let index = 0; // l'exercice montré
 let arretBoucle = null; // coupe la boucle animée de l'exercice montré (G1)
-let imagesOrdre = []; // G3 : un bouton-image par choix, dans l'ordre de exercice.choix
+let imagesOrdre = []; // G3 : une tuile par choix, dans l'ordre de exercice.choix
 let rangees = []; // G3 : les index de exercice.choix rangés dans la ligne, dans l'ordre touché
+
+const TAILLE_TI = 72;
 
 const hangeulDe = (id) => VOCABULAIRE.find((e) => e.id === id).hangeul;
 const estGeste = (exercice) => exercice.type.startsWith('G');
 // Les réponses à indexer par exercice.choix (hors G3, dont les images bougent entre la ligne et le bas).
 const boutonsDeReponse = (racine) => [...racine.querySelectorAll('#lecon-choix button')];
-const tousLesBoutons = (racine) => racine.querySelectorAll('#lecon-geste button, #lecon-choix button, #lecon-verifier');
+// « Rejouer » n'est pas une réponse : il reste actif pendant la correction (on peut revoir le geste).
+const tousLesBoutons = (racine) => racine.querySelectorAll('#lecon-geste button:not(.geste-rejouer), #lecon-choix button, #lecon-verifier');
 
 function arreterBoucle() {
   arretBoucle?.();
@@ -59,41 +65,61 @@ function majProgression(racine, lecon, exercice) {
   barre.firstElementChild.style.transform = `scaleX(${faits / total})`;
 }
 
-// Le nom de la bonne réponse, tel qu'on l'écrit sous la question.
-const texteDeLaBonne = (exercice) =>
-  estGeste(exercice) ? nomDuMouvement(exercice.choix[exercice.bonne]).fftda : exercice.choix[exercice.bonne];
-
 // Vert pour la bonne réponse, rouge pour celle qui a été touchée à tort.
 function corrigerChoix(racine, exercice) {
   const boutons = boutonsDeReponse(racine);
   boutons[exercice.bonne].classList.add('juste');
-  if (exercice.juste) {
-    racine.querySelector('#lecon-retour').textContent = 'Bien !';
-  } else {
-    boutons[exercice.choisi].classList.add('faux');
-    racine.querySelector('#lecon-retour').textContent = `La bonne réponse : ${texteDeLaBonne(exercice)}`;
-  }
+  if (!exercice.juste) boutons[exercice.choisi].classList.add('faux');
 }
 
 // G3 : chaque image est verte si elle est à la place qu'elle doit avoir (au sens des
-// signatures, comme noterReponse), rouge sinon ; le bon ordre est écrit dessous.
-function corrigerOrdre(racine, exercice) {
+// signatures, comme noterReponse), rouge sinon.
+function corrigerOrdre(exercice) {
   const attendu = exercice.bonne.map((i) => exercice.signatures[i]);
   exercice.choisi.forEach((i, rang) => {
     imagesOrdre[i].classList.add(exercice.signatures[i] === attendu[rang] ? 'juste' : 'faux');
   });
-  racine.querySelector('#lecon-retour').textContent = exercice.juste
-    ? 'Bien !'
-    : `Le bon ordre : ${exercice.bonne.map((i, rang) => `${rang + 1} ${nomDuMouvement(exercice.choix[i]).fftda}`).join(', ')}`;
+}
+
+// La réponse en entier, sous le titre du bandeau. Mots : « Kyongnye : Saluez » si juste, « Bonne réponse : Saluez »
+// sinon. Gestes : « Ale Maki, gauche : Blocage bas, bras gauche » si juste, « Bonne réponse : Ale Maki, gauche
+// (Blocage bas, bras gauche) » sinon ; G3 : le bon ordre, « 1 Ale Maki, gauche, 2 ... », précédé de « Bon ordre : » si faux.
+function detailDe(exercice) {
+  if (exercice.type === 'G3') {
+    const ordre = exercice.bonne.map((i, rang) => `${rang + 1} ${nomDuMouvement(exercice.choix[i]).fftda}`).join(', ');
+    return exercice.juste ? ordre : `Bon ordre : ${ordre}`;
+  }
+  if (estGeste(exercice)) {
+    const { fftda, fr } = nomDuMouvement(exercice.choix[exercice.bonne]);
+    return exercice.juste ? `${fftda} : ${fr}` : `Bonne réponse : ${fftda} (${fr})`;
+  }
+  const bonne = exercice.choix[exercice.bonne];
+  return exercice.juste ? `${exercice.question} : ${bonne}` : `Bonne réponse : ${bonne}`;
+}
+
+// Tant que le bandeau (collé en bas de l'écran) est visible, la page garde en bas sa hauteur en marge :
+// la dernière tuile se défile jusqu'au-dessus de lui. Reprise à chaque changement de sa taille (écran
+// plus étroit, texte plus long), car sa hauteur dépend du retour à la ligne.
+function reserverLaPlace(racine) {
+  const bandeau = racine.querySelector('#lecon-correction');
+  racine.style.paddingBottom = bandeau.hidden ? '' : `calc(${bandeau.offsetHeight}px + 16px)`;
 }
 
 function corriger(racine, lecon, exercice) {
   for (const b of tousLesBoutons(racine)) b.disabled = true;
   racine.querySelector('#lecon-verifier').hidden = true;
-  if (exercice.type === 'G3') corrigerOrdre(racine, exercice);
+  if (exercice.type === 'G3') corrigerOrdre(exercice);
   else corrigerChoix(racine, exercice);
+  const bandeau = racine.querySelector('#lecon-correction');
+  bandeau.classList.add(exercice.juste ? 'juste' : 'faux');
+  racine.querySelector('#lecon-retour').textContent = exercice.juste ? 'Bien joué !' : 'Pas tout à fait';
+  racine.querySelector('#lecon-retour-detail').textContent = detailDe(exercice);
+  if (!estGeste(exercice)) racine.querySelector('#lecon-ti').innerHTML = svgTi(exercice.juste ? 'reussite' : 'erreur', { taille: TAILLE_TI });
   const suite = racine.querySelector('#lecon-continuer');
-  suite.hidden = false;
+  suite.textContent = exercice.juste ? 'Continuer' : 'Compris';
+  bandeau.hidden = false;
+  suite.hidden = false; // les bancs lisent aussi l'état du bouton lui-même
+  reserverLaPlace(racine);
   suite.focus();
   majProgression(racine, lecon, exercice);
 }
@@ -109,7 +135,8 @@ function toucher(racine, choix) {
   corriger(racine, lecon, exercice);
 }
 
-// G3 : la ligne numérotée du haut, puis les images pas encore rangées en bas.
+// G3 : les quatre places numérotées en colonne, puis la réserve en grille 2 x 2. Chaque tuile a sa place dans la
+// réserve et la garde : rangée, elle laisse sa place vide (des pointillés), et revenue, elle la retrouve.
 function dessinerOrdre(racine) {
   const ligne = creer('ol', 'geste-rang');
   ligne.setAttribute('aria-label', 'Ton ordre');
@@ -121,17 +148,21 @@ function dessinerOrdre(racine) {
     ligne.append(li);
   });
   racine.querySelector('#lecon-geste').replaceChildren(ligne);
-  racine.querySelector('#lecon-choix').replaceChildren(...imagesOrdre.filter((_, i) => !rangees.includes(i)));
+  racine.querySelector('#lecon-choix').replaceChildren(...imagesOrdre.map((tuile, i) => {
+    const place = creer('div', 'geste-case');
+    if (!rangees.includes(i)) place.append(tuile);
+    return place;
+  }));
   racine.querySelector('#lecon-verifier').disabled = rangees.length < imagesOrdre.length;
 }
 
-// Toucher une image la range ; toucher une image rangée la remet en bas (tant que la réponse n'est pas vérifiée).
+// Toucher une tuile la range ; toucher une tuile rangée la remet dans la réserve (tant que la réponse n'est pas vérifiée).
 function deplacerImage(racine, i) {
   const exercice = leconCourante()?.exercices[index];
   if (!exercice || exercice.repondu) return;
   rangees = rangees.includes(i) ? rangees.filter((x) => x !== i) : [...rangees, i];
   dessinerOrdre(racine);
-  imagesOrdre[i].focus(); // l'image a changé de place dans la page : le clavier ne la perd pas
+  imagesOrdre[i].focus(); // la tuile a changé de place dans la page : le clavier ne la perd pas
 }
 
 function brancherChoix(racine, boutons) {
@@ -148,7 +179,7 @@ function afficherGeste(racine, exercice) {
   if (exercice.type === 'G1') {
     const boucle = cadreEnBoucle(exercice.question);
     arretBoucle = boucle.arreter;
-    zone.replaceChildren(boucle.cadre);
+    zone.replaceChildren(boucle.tapis);
     choix.replaceChildren(...brancherChoix(racine, exercice.choix.map(boutonNom)));
     return;
   }
@@ -172,11 +203,11 @@ function afficherGeste(racine, exercice) {
 function afficherOrdre(racine, exercice) {
   rangees = exercice.repondu ? [...exercice.choisi] : [];
   imagesOrdre = exercice.choix.map((id, i) => {
-    const b = boutonImage(id, i + 1);
+    const b = boutonOrdre(id);
     b.addEventListener('click', () => deplacerImage(racine, i));
     return b;
   });
-  racine.querySelector('#lecon-choix').className = 'choix choix-images choix-ordre';
+  racine.querySelector('#lecon-choix').className = 'choix choix-ordre';
   racine.querySelector('#lecon-verifier').hidden = false;
   dessinerOrdre(racine);
 }
@@ -185,7 +216,7 @@ function afficherMot(racine, exercice) {
   racine.querySelector('#lecon-question').textContent = exercice.question;
   racine.querySelector('#lecon-hangeul').textContent = exercice.type === 'V1' ? hangeulDe(exercice.id) : '';
   racine.querySelector('#lecon-choix').replaceChildren(...brancherChoix(racine, exercice.choix.map((texte) => {
-    const b = creer('button', 'reponse', texte);
+    const b = creer('button', 'reponse reponse-mot', texte);
     b.type = 'button';
     return b;
   })));
@@ -198,9 +229,15 @@ function afficherExercice(racine, lecon) {
   if (!consigne) throw new Error(`L'exercice ${exercice.type} demande le son, indisponible dans ce lot`);
 
   racine.querySelector('#lecon-rattrapage').hidden = !exercice.rattrapage;
+  // « Nouveau » : le premier exercice d'un élément absent de l'état d'avant la leçon. Un rattrapage ne l'est
+  // jamais : il vient après l'exercice raté du même élément, donc après sa première occurrence.
+  const premier = lecon.exercices.findIndex((e) => e.id === exercice.id) === index;
+  racine.querySelector('#lecon-nouveau').hidden = !premier || !estNouveauDansLaLecon(exercice.id);
   racine.querySelector('#lecon-consigne').textContent = consigne;
-  // Un exercice de geste n'a ni texte de question ni hangeul : la zone des gestes les remplace.
+  // Un exercice de geste n'a ni texte de question ni hangeul ni Ti : la zone des gestes les remplace.
   const geste = estGeste(exercice);
+  racine.querySelector('#lecon-mot').hidden = geste;
+  racine.querySelector('#lecon-ti').innerHTML = geste ? '' : svgTi('attente', { taille: TAILLE_TI });
   racine.querySelector('#lecon-question').hidden = geste;
   racine.querySelector('#lecon-hangeul').hidden = geste;
   racine.querySelector('#lecon-geste').hidden = !geste;
@@ -210,8 +247,13 @@ function afficherExercice(racine, lecon) {
   racine.querySelector('#lecon-verifier').hidden = true;
   if (geste) afficherGeste(racine, exercice);
   else afficherMot(racine, exercice);
+  const bandeau = racine.querySelector('#lecon-correction');
+  bandeau.hidden = true;
+  bandeau.classList.remove('juste', 'faux');
   racine.querySelector('#lecon-retour').textContent = '';
+  racine.querySelector('#lecon-retour-detail').textContent = '';
   racine.querySelector('#lecon-continuer').hidden = true;
+  reserverLaPlace(racine);
   majProgression(racine, lecon, exercice);
   if (exercice.repondu) corriger(racine, lecon, exercice); // retour sur l'écran par la flèche arrière
 }
@@ -230,6 +272,9 @@ function continuer(racine) {
 }
 
 function brancher(racine) {
+  // Boîte de BORDURE : la réserve est l'offsetHeight du bandeau, padding compris. La boîte de contenu (le défaut) ne
+  // bouge pas quand le padding change (zone sûre de l'iPhone à la rotation), le rappel ne partirait pas.
+  new ResizeObserver(() => reserverLaPlace(racine)).observe(racine.querySelector('#lecon-correction'), { box: 'border-box' });
   racine.querySelector('#lecon-continuer').addEventListener('click', () => continuer(racine));
   racine.querySelector('#lecon-verifier').addEventListener('click', () => toucher(racine, [...rangees]));
   racine.querySelector('#lecon-quitter').addEventListener('click', () => {

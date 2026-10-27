@@ -47,8 +47,8 @@ const magasin = ouvrirMagasin();
 const lu = lire(magasin, aujourdhui());
 let etat = lu.etat;
 let enregistrable = true;
-let courante = null; // { lecon, avant } : la leçon en cours et l'état d'avant la première réponse
-let derniere = null; // { lecon, avant } : la leçon qui vient de finir, pour l'écran de fin
+let courante = null; // { lecon, avant, debut } : la leçon en cours, l'état d'avant la première réponse, l'heure de départ (Date.now())
+let derniere = null; // { lecon, avant, debut, fin } : la leçon qui vient de finir, pour l'écran de fin ; le temps ne va jamais dans le stockage
 
 /** L'état courant de l'élève. */
 export const etatCourant = () => etat;
@@ -104,11 +104,17 @@ export function demarrerLecon(mode, unite = null) {
     unite,
     audioDisponible: AUDIO_DISPONIBLE,
   });
-  courante = { lecon, avant: etat };
+  courante = { lecon, avant: etat, debut: Date.now() };
 }
 
 /** La leçon en cours, ou null. */
 export const leconCourante = () => courante?.lecon ?? null;
+
+/**
+ * Vrai si cet élément n'existait pas dans l'état d'avant la leçon en cours (c'est ce qui fait
+ * « Nouveau » sur son premier exercice). Faux sans leçon en cours. Une lecture : rien n'est écrit.
+ */
+export const estNouveauDansLaLecon = (id) => courante !== null && !Object.hasOwn(courante.avant.elements, id);
 
 /** Laisse la leçon : ce qui a été répondu est déjà enregistré. */
 export function quitterLecon() {
@@ -117,10 +123,10 @@ export function quitterLecon() {
 
 /** Fin de la leçon : le jour compte, puis la leçon passe à l'écran de fin. */
 export function terminerLecon() {
-  derniere = courante;
+  derniere = { ...courante, fin: Date.now() };
   courante = null;
   enregistrer(marquerJour(derniere.lecon.etat, aujourdhui(), 'l'));
 }
 
-/** La leçon qui vient de finir : { lecon, avant }, ou null. */
+/** La leçon qui vient de finir : { lecon, avant, debut, fin }, ou null. */
 export const leconTerminee = () => derniere;

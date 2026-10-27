@@ -56,6 +56,23 @@ export function serieCourante(etat, aujourdhui) {
   return joursAvant(etat.jours, ajouterJours(aujourdhui, -1));
 }
 
+// Un lundi connu : le jour de la semaine se déduit de l'écart avec lui (en jours entiers, sans
+// Date locale), donc sans dépendre du fuseau ni d'un changement d'heure.
+const UN_LUNDI = "2026-10-26";
+const INITIALES = ["L", "M", "M", "J", "V", "S", "D"];
+
+/**
+ * La semaine du lundi au dimanche qui contient `aujourdhui`, en lecture : sept objets
+ * { jour, initiale, marque ('l', 'c', 'lc' ou null), aujourdhui }.
+ */
+export function semaineDe(etat, aujourdhui) {
+  const rang = (((ecartJours(UN_LUNDI, aujourdhui) % 7) + 7) % 7); // 0 le lundi, 6 le dimanche
+  return INITIALES.map((initiale, i) => {
+    const jour = ajouterJours(aujourdhui, i - rang);
+    return { jour, initiale, marque: etat.jours[jour] ?? null, aujourdhui: jour === aujourdhui };
+  });
+}
+
 const jours = (n) => `${n} ${n === 1 ? "jour" : "jours"}`;
 
 /** Le texte de série de l'accueil. */

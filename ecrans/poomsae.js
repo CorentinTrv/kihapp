@@ -129,7 +129,7 @@ function creerEcran(racine) {
       lastMv = m;
       // Le retour Baro n'a ni technique ni numéro : son nom est celui du commandement « Baro », numéro 0 comme le départ.
       const technique = m && (m.fin ? voc('baro') : techniqueAffichee(m));
-      $('mvTitle').innerHTML = m ? `<span class="n">${m.fin ? 0 : m.numeroKukkiwon}</span>${technique.fftda} <span style="font-weight:400;color:var(--muted)">${technique.hangeul}</span>` : '<span class="n">0</span>Départ';
+      $('mvTitle').innerHTML = m ? `<span class="n">${m.fin ? 0 : m.numeroKukkiwon}</span>${technique.fftda} <span style="font-weight:400;color:var(--k-texte2)">${technique.hangeul}</span>` : '<span class="n">0</span>Départ';
       $('mvSub').textContent = m ? nomDuMouvement(m) : `${voc('tchoumbi').fftda}, position prête`;
       const cells = segs.filter((x) => x.m === m);
       strip.innerHTML = cells.map((c) => `<div class="cell ${c.ph}" data-i="${segs.indexOf(c)}" style="flex-grow:${(c.t1 - c.t0).toFixed(2)}">${cellLabel(m, c.ph)}</div>`).join('') + '<div class="head" id="head"></div>';
