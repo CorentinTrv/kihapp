@@ -1,4 +1,5 @@
-/* Kihapp, styles.css (lot K1, fondations refondues au lot R2). Nunito est servie par l'app
+/* Kihapp, styles.css (lot K1, fondations refondues au lot R2). Lot fond N1 du 27/10 : fond de page bleu piscine en clair
+   (--k-page et --k-onglets), textes presque noirs, 8 % plus grands et plus gras. Nunito est servie par l'app
    (polices/, licence OFL dans polices/OFL.txt), aucune police distante.
    Les jetons --k-* viennent de la maquette (maquette/kit/KIT.md §3 et §5) : clair dans :root,
    sombre sous prefers-color-scheme. Les anciennes variables (--bg, --ink...) ont disparu
@@ -16,9 +17,14 @@
 
 :root {
   /* fonds et texte */
-  --k-fond: #FFFFFF; --k-surface: #F2F4F7; --k-trait: #E3E6EB; --k-texte: #1F2430; --k-texte2: #5B6372;
+  --k-fond: #FFFFFF; --k-surface: #95C4EE; --k-trait: #7FB4E4; --k-texte: #0B0F19; --k-texte2: #1F2633;
+  /* lot fond N1 : --k-page peint la page, --k-onglets la barre du bas ; --k-fond reste blanc, c'est la couleur des cartes */
+  --k-page: #A8D8FF; --k-onglets: #8CC8FF;
+  /* la barre d'onglets : texte, onglet actif (texte, pastille, icône, bord de la pastille) ; le mode sombre redéclare les cinq */
+  --k-onglet-texte: var(--k-texte); --k-onglet-actif-texte: var(--k-texte);
+  --k-onglet-pastille: var(--k-id); --k-onglet-icone: var(--k-id-sur); --k-onglet-bord: var(--k-id-relief);
   /* identité, mandarine */
-  --k-id: #E65F00; --k-id-relief: #B34A00; --k-id-sur: #FFFFFF; --k-id-doux: #FFF1E6; --k-id-texte: #B34A00; --k-id-bord: #FFC79A;
+  --k-id: #E65F00; --k-id-relief: #B34A00; --k-id-sur: #FFFFFF; --k-id-doux: #FFF1E6; --k-id-texte: #983F00; --k-id-bord: #FFC79A;
   --k-banniere: #B34A00; --k-banniere-relief: #8A3900; --k-banniere-texte: #FFFFFF;
   --k-banniere-bouton: rgba(255,255,255,0.14); --k-banniere-bord: rgba(255,255,255,0.55);
   /* correction */
@@ -40,13 +46,13 @@
   --k-ceinture-bleue: #2F6FDB; --k-ceinture-rouge: #D23A3A; --k-ceinture-noire: #1F2430;
   /* forme */
   --k-rayon-tuile: 14px; --k-rayon-carte: 20px; --k-relief: 4px; --k-tactile: 44px;
-  /* texte : 34 mot, 24 titre, 19 bouton, 16 courant, 13 étiquette */
+  /* texte : 37 mot, 26 titre, 21 bouton, 17 courant, 14 étiquette (lot fond N1 : les tailles de KIT §4 x 1,08, une graisse de plus) */
   --k-police: Nunito, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --k-t-mot: 900 34px/1.05 var(--k-police);
-  --k-t-titre: 900 24px/1.1 var(--k-police);
-  --k-t-bouton: 900 19px/1 var(--k-police);
-  --k-t-courant: 700 16px/1.4 var(--k-police);
-  --k-t-etiquette: 900 13px/1 var(--k-police);
+  --k-t-mot: 900 37px/1.05 var(--k-police);
+  --k-t-titre: 900 26px/1.1 var(--k-police);
+  --k-t-bouton: 900 21px/1 var(--k-police);
+  --k-t-courant: 800 17px/1.4 var(--k-police);
+  --k-t-etiquette: 900 14px/1 var(--k-police);
 
   color-scheme: light dark;
 }
@@ -54,6 +60,9 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --k-fond: #14121C; --k-surface: #1F1C2B; --k-trait: #34304A; --k-texte: #F3F1FA; --k-texte2: #A9A3BD;
+    --k-page: #14121C; --k-onglets: #14121C;
+    --k-onglet-texte: var(--k-texte2); --k-onglet-actif-texte: var(--k-id-texte);
+    --k-onglet-pastille: var(--k-id-doux); --k-onglet-icone: var(--k-id); --k-onglet-bord: var(--k-id-bord);
     --k-id: #FF8A3D; --k-id-relief: #C2620F; --k-id-sur: #14121C; --k-id-doux: #3A2416; --k-id-texte: #FFA366; --k-id-bord: #7A3E14;
     --k-banniere: #FF8A3D; --k-banniere-relief: #C2620F; --k-banniere-texte: #14121C;
     --k-banniere-bouton: rgba(20,18,28,0.10); --k-banniere-bord: rgba(20,18,28,0.55);
@@ -76,7 +85,7 @@ body {
   --hauteur-barre: calc(74px + env(safe-area-inset-bottom));
   margin: 0;
   padding-bottom: var(--hauteur-barre);
-  background: var(--k-fond);
+  background: var(--k-page);
   color: var(--k-texte);
   font: var(--k-t-courant);
 }
@@ -100,7 +109,7 @@ main {
 }
 
 .ecran { padding: 16px 0; }
-.ecran h2 { margin: 0 0 12px; font-size: 1.125rem; color: var(--k-texte2); }
+.ecran h2 { margin: 0 0 12px; font-size: 21px; color: var(--k-texte); }
 
 
 /* ---------------------------------------------------------------------------
@@ -121,14 +130,14 @@ main {
 #poomsae .main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
 
 #poomsae header { display: grid; gap: 8px; }
-#poomsae .eyebrow { display: flex; align-items: center; gap: 6px; font: 700 14px/1.3 var(--k-police); color: var(--k-texte2); }
+#poomsae .eyebrow { display: flex; align-items: center; gap: 6px; font: 800 15px/1.3 var(--k-police); color: var(--k-texte2); }
 #poomsae .eyebrow svg { flex: none; }
-#poomsae .titre { margin: 0; font: var(--k-t-titre); text-wrap: balance; }
-#poomsae .titre .ko { margin-left: 10px; font: 700 18px/1.1 var(--k-police); color: var(--k-texte2); white-space: nowrap; }
+#poomsae .titre { margin: 0; font: 900 29px/1.1 var(--k-police); text-wrap: balance; }
+#poomsae .titre .ko { margin-left: 10px; font: 800 19px/1.1 var(--k-police); color: var(--k-texte2); white-space: nowrap; }
 /* Le trigramme ☰ (déjà masqué aux lecteurs d'écran) est retiré de l'oeil : la maquette ne le montre pas. */
 #poomsae .titre .tri { display: none; }
-#poomsae .lede { margin: 0; max-width: 65ch; font: 700 15px/1.45 var(--k-police); color: var(--k-texte2); }
-#poomsae .legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 4px; font: 700 13px/1.3 var(--k-police); color: var(--k-texte2); }
+#poomsae .lede { margin: 0; max-width: 65ch; font: 800 16px/1.45 var(--k-police); color: var(--k-texte2); }
+#poomsae .legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 4px; font: 800 14px/1.3 var(--k-police); color: var(--k-texte2); }
 #poomsae .legend span { display: inline-flex; align-items: center; gap: 6px; }
 /* Gauche et Droite : les puces de la maquette (le bleu et le rouge ne servent qu'ici et sur le bonhomme). Le rouge de
    « Droite » sur son fond doux n'atteint que 4,3:1 en clair : on le tire de 25 % vers la couleur du texte (même geste que
@@ -136,24 +145,31 @@ main {
 #poomsae .legend .cote-gauche, #poomsae .legend .cote-droite { padding: 4px 8px; font: var(--k-t-etiquette); letter-spacing: .06em; text-transform: uppercase; border-radius: 8px; }
 #poomsae .legend .cote-gauche { background: var(--k-gauche-doux); }
 #poomsae .legend .cote-droite { color: color-mix(in srgb, var(--k-droite) 75%, var(--k-texte)); background: var(--k-droite-doux); }
+/* Écart assumé du 27/10 (fond de page bleu piscine) : en clair seulement, les étiquettes portent un contour intérieur de 2 px à leur couleur,
+   pour ne pas se confondre avec le fond. Le mode sombre garde les étiquettes d'avant. */
+@media (prefers-color-scheme: light) {
+  #poomsae .legend .cote-gauche { box-shadow: inset 0 0 0 2px var(--k-gauche); }
+  #poomsae .legend .cote-droite { box-shadow: inset 0 0 0 2px var(--k-droite); }
+}
 #poomsae .sw { width: 22px; height: 6px; border-radius: 3px; display: inline-block; }
 #poomsae .sw.l { background: var(--k-gauche); }
 #poomsae .sw.r { background: var(--k-droite); }
 #poomsae .sw.dash { height: 0; border-top: 3px dashed var(--k-texte2); border-radius: 0; background: none; }
 @media (max-width:480px) {
-  #poomsae .cell { font-size: 11px; padding: 5px 3px; }
-  #poomsae .cell b { font-size: 14px; }
-  #poomsae .caption { font-size: 16px; }
+  #poomsae .cell { font-size: 12px; padding: 5px 3px; }
+  #poomsae .cell b { font-size: 15px; }
+  #poomsae .caption { font-size: 17px; }
 }
 
 /* Les cartes. */
 #poomsae .panel, #poomsae .method, #poomsae .tip { min-width: 0; background: var(--k-fond); border: 2px solid var(--k-trait); border-bottom-width: 5px; border-radius: var(--k-rayon-carte); }
 #poomsae .panel { overflow: hidden; }
 #poomsae .stagehead { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; justify-content: space-between; padding: 14px 16px 12px; }
-#poomsae .mvtitle { font: 900 19px/1.25 var(--k-police); }
+#poomsae .mvtitle { font: 900 24px/1.25 var(--k-police); }
+#poomsae .mvtitle > span { font-size: 21px; } /* le numéro et le hangeul restent à la taille du texte courant, pas à celle du titre */
 #poomsae .mvtitle .n { margin-right: 6px; color: var(--k-texte2); font-variant-numeric: tabular-nums; }
-#poomsae .mvsub { font: 700 14px/1.35 var(--k-police); color: var(--k-texte2); }
-#poomsae .chip { padding: 3px 10px; font: 800 13px/1.3 var(--k-police); color: var(--k-fond); background: var(--k-texte); border: 2px solid transparent; border-radius: 999px; white-space: nowrap; }
+#poomsae .mvsub { font: 800 15px/1.35 var(--k-police); color: var(--k-texte2); }
+#poomsae .chip { padding: 3px 10px; font: 900 14px/1.3 var(--k-police); color: var(--k-fond); background: var(--k-texte); border: 2px solid transparent; border-radius: 999px; white-space: nowrap; }
 #poomsae .chip.C { color: var(--k-id-texte); background: var(--k-id-doux); border-color: var(--k-id-bord); }
 #poomsae #stage { display: block; width: 100%; height: auto; background: var(--k-tapis); overflow: hidden; touch-action: pan-y; }
 #poomsae .stills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 10px 16px 0; }
@@ -161,15 +177,15 @@ main {
 #poomsae .still button { display: block; width: 100%; padding: 0; overflow: hidden; background: var(--k-tapis); border: 2px solid var(--k-trait); border-radius: var(--k-rayon-tuile); }
 #poomsae .still button[aria-current="true"] { border-color: var(--k-id); box-shadow: 0 0 0 2px var(--k-id); }
 #poomsae .still svg { display: block; width: 100%; height: auto; }
-#poomsae .still figcaption { padding: 0 2px; font: 700 12px/1.3 var(--k-police); color: var(--k-texte2); text-align: center; }
+#poomsae .still figcaption { padding: 0 2px; font: 800 13px/1.3 var(--k-police); color: var(--k-texte2); text-align: center; }
 #poomsae .still figcaption b { font-weight: 900; color: var(--k-texte); }
 #poomsae .strip { position: relative; display: flex; gap: 3px; padding: 12px 16px 0; }
-#poomsae .cell { flex-basis: 0; min-width: 0; padding: 6px; font: 700 12px/1.25 var(--k-police); hyphens: auto; text-align: center; color: var(--k-texte2); background: var(--k-surface); border: 2px solid transparent; border-radius: 8px; }
-#poomsae .cell b { display: block; margin-bottom: 2px; font-size: 15px; font-weight: 900; line-height: 1.1; font-variant-numeric: tabular-nums; }
+#poomsae .cell { flex-basis: 0; min-width: 0; padding: 6px; font: 800 13px/1.25 var(--k-police); hyphens: auto; text-align: center; color: var(--k-texte2); background: var(--k-surface); border: 2px solid transparent; border-radius: 8px; }
+#poomsae .cell b { display: block; margin-bottom: 2px; font-size: 16px; font-weight: 900; line-height: 1.1; font-variant-numeric: tabular-nums; }
 #poomsae .cell.on { color: var(--k-fond); background: var(--k-texte); }
 #poomsae .cell.on.C { color: var(--k-id-texte); background: var(--k-id-doux); border-color: var(--k-id-bord); }
 #poomsae .strip .head { position: absolute; top: 8px; bottom: -4px; width: 2px; background: var(--k-id); border-radius: 1px; pointer-events: none; }
-#poomsae .caption { padding: 12px 16px 4px; font-size: 17px; line-height: 1.55; min-height: 7.2em; max-width: 70ch; }
+#poomsae .caption { padding: 12px 16px 4px; font-size: 18px; line-height: 1.55; min-height: 7.2em; max-width: 70ch; }
 #poomsae .caption b { font-weight: 900; }
 #poomsae .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 16px; border-top: 2px solid var(--k-trait); }
 #poomsae .controls .grow { flex: 1 1 160px; min-width: 0; display: flex; }
@@ -178,7 +194,7 @@ main {
 
 /* Les boutons : des tuiles à relief (44 px de haut au moins). Lecture est le bouton principal mandarine, au gabarit de la
    leçon, sans capitales : « Pause » et « Revoir » prennent sa place et banc-hors-ligne lit « Pause » par innerText. */
-#poomsae button { min-height: var(--k-tactile); padding: 6px 14px; font: 800 15px/1.2 var(--k-police); color: var(--k-texte); background: var(--k-fond); border: 2px solid var(--k-trait); border-bottom-width: 5px; border-radius: var(--k-rayon-tuile); cursor: pointer; }
+#poomsae button { min-height: var(--k-tactile); padding: 6px 14px; font: 900 16px/1.2 var(--k-police); color: var(--k-texte); background: var(--k-fond); border: 2px solid var(--k-trait); border-bottom-width: 5px; border-radius: var(--k-rayon-tuile); cursor: pointer; }
 #poomsae button:focus-visible, #poomsae input:focus-visible { outline: 2px solid var(--k-id); outline-offset: 2px; }
 #poomsae button.primary { min-width: 104px; min-height: 54px; font: var(--k-t-bouton); color: var(--k-id-sur); background: var(--k-id); border: 0; box-shadow: 0 var(--k-relief) 0 var(--k-id-relief); }
 #poomsae button.primary:active { transform: translateY(var(--k-relief)); box-shadow: none; }
@@ -189,35 +205,35 @@ main {
 #poomsae .seg button:first-child { border-radius: var(--k-rayon-tuile) 0 0 var(--k-rayon-tuile); }
 #poomsae .seg button:last-child { border-radius: 0 var(--k-rayon-tuile) var(--k-rayon-tuile) 0; }
 #poomsae .seg button[aria-pressed="true"] { color: var(--k-id-texte); background: var(--k-id-doux); border-color: var(--k-id-bord); }
-#poomsae .opts { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; padding: 0 16px 14px; font: 700 15px/1.3 var(--k-police); color: var(--k-texte2); }
+#poomsae .opts { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; padding: 0 16px 14px; font: 800 16px/1.3 var(--k-police); color: var(--k-texte2); }
 #poomsae .opts label { display: inline-flex; gap: 8px; align-items: center; min-height: var(--k-tactile); cursor: pointer; }
 /* Cinq points de vue ne tiennent pas côte à côte à 375 px : ils passent à la ligne, chacun une tuile entière. */
 #poomsae .opts .seg { flex-wrap: wrap; gap: 6px; }
 #poomsae .opts .seg button { margin-left: 0; border-radius: var(--k-rayon-tuile); }
 
 #poomsae .side { display: grid; gap: 20px; min-width: 0; }
-#poomsae .side h2 { padding: 14px 16px 4px; font: var(--k-t-etiquette); letter-spacing: .06em; text-transform: uppercase; color: var(--k-texte2); }
-#poomsae .side p.note { margin: 0; padding: 0 16px 12px; font: 700 14px/1.4 var(--k-police); color: var(--k-texte2); }
+#poomsae .side h2 { padding: 14px 16px 4px; font: 900 16px/1 var(--k-police); letter-spacing: .06em; text-transform: uppercase; color: var(--k-texte); }
+#poomsae .side p.note { margin: 0; padding: 0 16px 12px; font: 800 15px/1.4 var(--k-police); color: var(--k-texte2); }
 #poomsae #map { display: block; width: 100%; height: auto; background: var(--k-tapis); }
 /* La liste des mouvements : une tuile par mouvement sur surface, le mouvement courant en mandarine douce (aria-current posé par poomsae.js). */
 #poomsae ol.mvs { list-style: none; margin: 0; padding: 8px 12px 12px; display: grid; gap: 8px; }
-#poomsae .mvbtn { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 4px 10px; padding: 10px 12px; text-align: left; font-weight: 700; background: var(--k-surface); border: 2px solid transparent; }
+#poomsae .mvbtn { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 4px 10px; padding: 10px 12px; text-align: left; font-weight: 800; background: var(--k-surface); border: 2px solid transparent; }
 #poomsae .mvbtn[aria-current="true"] { background: var(--k-id-doux); border-color: var(--k-id-bord); }
-#poomsae .mvbtn .n { font: 900 20px/1.2 var(--k-police); font-variant-numeric: tabular-nums; }
+#poomsae .mvbtn .n { font: 900 22px/1.2 var(--k-police); font-variant-numeric: tabular-nums; }
 #poomsae .mvbtn[aria-current="true"] .n { color: var(--k-id-texte); }
-#poomsae .mvbtn .t { min-width: 0; font-size: 14px; line-height: 1.35; }
+#poomsae .mvbtn .t { min-width: 0; font-size: 15px; line-height: 1.35; }
 #poomsae .mvbtn .t b { font-weight: 900; }
-#poomsae .mvbtn .t small { font-size: 13px; }
+#poomsae .mvbtn .t small { font-size: 14px; }
 #poomsae .mvbtn .ko { margin-left: 4px; color: var(--k-texte2); }
 #poomsae .mvbtn .fr { color: var(--k-texte2); }
 #poomsae .method { padding: 16px; display: grid; gap: 8px; }
-#poomsae .method h2 { font: 900 19px/1.25 var(--k-police); }
+#poomsae .method h2 { font: 900 24px/1.25 var(--k-police); }
 #poomsae .method ol, #poomsae .method ul { margin: 0; padding-left: 22px; display: grid; gap: 6px; max-width: 70ch; }
 #poomsae .method li b { font-weight: 900; }
-#poomsae .method p.src { margin: 0; max-width: 70ch; font: 700 14px/1.4 var(--k-police); color: var(--k-texte2); }
+#poomsae .method p.src { margin: 0; max-width: 70ch; font: 800 15px/1.4 var(--k-police); color: var(--k-texte2); }
 #poomsae .tips { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 #poomsae .tip { padding: 14px 16px; }
-#poomsae .tip h3 { margin: 0 0 4px; font: 900 17px/1.25 var(--k-police); }
+#poomsae .tip h3 { margin: 0 0 4px; font: 900 20px/1.25 var(--k-police); }
 #poomsae .tip p { margin: 0; color: var(--k-texte2); }
 
 /* Le bonhomme, la scène et la carte du sol. Les règles écrites sous :is(#poomsae, #lecon) sont partagées avec la leçon
@@ -274,7 +290,7 @@ main {
 .bouton {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 48px; padding: 10px 16px;
-  font: inherit; font-weight: 800; color: var(--k-texte); text-decoration: none;
+  font: inherit; font-weight: 900; color: var(--k-texte); text-decoration: none;
   background: var(--k-fond); border: 2px solid var(--k-trait); border-bottom-width: 5px;
   border-radius: var(--k-rayon-tuile); cursor: pointer;
 }
@@ -298,15 +314,15 @@ main {
   display: flex; align-items: center; justify-content: space-between;
   height: 56px; margin: 0 -16px; padding: 0 16px; border-bottom: 2px solid var(--k-surface);
 }
-.acc-haut-ceinture { display: flex; align-items: center; gap: 8px; font: 800 16px/1 var(--k-police); }
+.acc-haut-ceinture { display: flex; align-items: center; gap: 8px; font: 900 19px/1 var(--k-police); }
 .acc-ceinture-icone rect { fill: var(--k-ti); stroke: var(--k-ti-trait); stroke-width: 2; }
 .acc-ceinture-icone path { stroke: var(--k-ti-trait); }
-.acc-haut-serie { display: flex; align-items: center; gap: 6px; font: 900 16px/1 var(--k-police); color: var(--k-id-texte); }
+.acc-haut-serie { display: flex; align-items: center; gap: 6px; font: 900 17px/1 var(--k-police); color: var(--k-id-texte); }
 #acc-bandeaux .bandeau:first-child { margin-top: 12px; }
 
 .ecran h2.ceinture {
   display: flex; align-items: center; gap: 10px; margin: 14px 0 0;
-  font: var(--k-t-etiquette); letter-spacing: .06em; text-transform: uppercase; color: var(--k-texte2);
+  font: 900 16px/1 var(--k-police); letter-spacing: .06em; text-transform: uppercase; color: var(--k-texte);
 }
 .ecran h2.ceinture::before { content: ""; flex: none; width: 24px; height: 8px; background: var(--k-ceinture-jaune); border-radius: 4px; }
 .acc-banniere {
@@ -334,11 +350,11 @@ main {
 .unite.fermee .unite-rond { color: var(--k-verrou-icone); background: var(--k-verrou); box-shadow: 0 6px 0 var(--k-verrou-relief); }
 .unite-ti { display: flex; flex: none; }
 .unite-etiquette { display: grid; flex: 1; gap: 6px; min-width: 0; }
-.unite-titre { font: 800 16px/1.2 var(--k-police); color: var(--k-texte); overflow-wrap: anywhere; }
+.unite-titre { font: 900 19px/1.2 var(--k-police); color: var(--k-texte); overflow-wrap: anywhere; }
 .unite.fermee .unite-titre { color: var(--k-texte2); }
 .unite-suivi { display: flex; align-items: center; gap: 8px; }
 .unite-suivi .barre { flex: 1; }
-.unite-compte { font: 700 13px/1 var(--k-police); color: var(--k-texte2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.unite-compte { font: 800 14px/1 var(--k-police); color: var(--k-texte2); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .cadenas { display: inline-flex; }
 .cadenas svg { width: 30px; height: 30px; }
 .barre { display: block; height: 8px; overflow: hidden; background: var(--k-trait); border-radius: 4px; }
@@ -351,7 +367,7 @@ main {
 .rien-fragile { margin: 0; padding: 12px 16px; color: var(--k-texte2); border: 2px solid var(--k-trait); border-bottom-width: 5px; border-radius: var(--k-rayon-tuile); }
 /* #accueil > : la fin de leçon a aussi un rond .cours (la semaine de Fin2), qui ne doit pas devenir une carte. */
 #accueil > .cours { margin-bottom: 12px; padding: 16px; border: 2px solid var(--k-trait); border-bottom-width: 5px; border-radius: var(--k-rayon-carte); }
-.serie { margin: 0 0 12px; font-weight: 700; }
+.serie { margin: 0 0 12px; font-weight: 800; }
 #accueil > .cours > .bouton { width: 100%; }
 .cours-choix { display: flex; gap: 8px; margin-top: 8px; }
 .cours-choix .bouton { flex: 1; }
@@ -361,11 +377,11 @@ main {
 }
 .acc-lexique:focus-visible { outline: 2px solid var(--k-id); outline-offset: 2px; }
 .acc-lexique svg { color: var(--k-texte2); }
-.carte-perte { margin: 8px 0 0; padding: 12px 14px; font-size: .9rem; color: var(--k-texte2); background: var(--k-fond); border: 1px solid var(--k-trait); border-radius: 12px; }
+.carte-perte { margin: 8px 0 0; padding: 12px 14px; font-size: 16px; color: var(--k-texte2); background: var(--k-fond); border: 1px solid var(--k-trait); border-radius: 12px; }
 
 .lecon-tete { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .lecon-tete .barre { flex: 1; }
-.lecon-compte { font: 700 13px/1 var(--k-police); color: var(--k-texte2); font-variant-numeric: tabular-nums; }
+.lecon-compte { font: 800 14px/1 var(--k-police); color: var(--k-texte2); font-variant-numeric: tabular-nums; }
 /* « Quitter » est une croix : 44 px de zone tactile, un peu tirée vers le bord pour que le trait s'aligne sur la page. */
 .lecon-croix {
   display: inline-flex; flex: none; align-items: center; justify-content: center;
@@ -376,24 +392,24 @@ main {
 .etiquette { display: inline-block; margin: 0 0 10px; padding: 6px 10px; font: var(--k-t-etiquette); letter-spacing: .06em; text-transform: uppercase; border-radius: 8px; }
 .etiquette.nouveau { color: var(--k-nouveau-texte); background: var(--k-nouveau-fond); }
 .etiquette.rattrapage { color: var(--k-revoir-texte); background: var(--k-revoir-fond); }
-.ecran h2.consigne { margin: 0 0 12px; font: 800 19px/1.25 var(--k-police); color: var(--k-texte); }
+.ecran h2.consigne { margin: 0 0 12px; font: 900 24px/1.25 var(--k-police); color: var(--k-texte); }
 /* La carte du mot, Ti à sa gauche (un exercice de geste cache les deux). */
 .lecon-mot { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .lecon-ti { display: flex; flex: none; }
 .carte-mot { flex: 1; min-width: 0; padding: 14px 18px; background: var(--k-fond); border: 2px solid var(--k-trait); border-radius: var(--k-rayon-carte); }
 .question { margin: 0; font: var(--k-t-mot); overflow-wrap: anywhere; }
-.question-hangeul { margin: 4px 0 0; font: 700 18px/1.3 var(--k-police); color: var(--k-texte2); }
+.question-hangeul { margin: 4px 0 0; font: 800 19px/1.3 var(--k-police); color: var(--k-texte2); }
 .question-hangeul:empty { display: none; }
 .choix { display: grid; gap: 10px; }
 .reponse {
-  min-height: 56px; padding: 12px 16px; font: inherit; font-weight: 800; color: var(--k-texte); text-align: left;
+  min-height: 56px; padding: 12px 16px; font: inherit; font-weight: 900; color: var(--k-texte); text-align: left;
   background: var(--k-fond); border: 2px solid var(--k-trait); border-bottom-width: 5px;
   border-radius: var(--k-rayon-tuile); cursor: pointer;
 }
 .reponse:disabled { cursor: default; }
 .reponse.juste { color: var(--k-juste-texte); background: var(--k-juste-doux); border-color: var(--k-juste); }
 .reponse.faux { color: var(--k-faux-texte); background: var(--k-faux-doux); border-color: var(--k-faux); }
-.reponse.reponse-mot { font: var(--k-t-courant); font-weight: 800; text-align: center; }
+.reponse.reponse-mot { font: var(--k-t-courant); font-weight: 900; text-align: center; }
 
 /* Le bandeau de correction (KIT §5) : collé en bas de l'écran, de la largeur de la page (40 rem au plus),
    vert doux si juste, framboise doux si faux. Il porte sa propre hauteur : lecon.js la réserve en bas de
@@ -446,12 +462,12 @@ main {
    couleur du texte (plus sombre en clair, plus clair en sombre) pour passer 4,5:1 sans changer de teinte. */
 .reponse.faux .cote-droite { color: color-mix(in srgb, var(--k-droite) 75%, var(--k-texte)); }
 .geste-fftda-grand { margin: 0; font: var(--k-t-titre); overflow-wrap: anywhere; }
-.geste-fr { display: block; color: var(--k-texte2); font: 700 14px/1.3 var(--k-police); }
+.geste-fr { display: block; color: var(--k-texte2); font: 800 15px/1.3 var(--k-police); }
 p.geste-fr { margin: 4px 0 0; }
 .reponse.juste .geste-fr { color: var(--k-juste-texte); }
 .reponse.faux .geste-fr { color: var(--k-faux-texte); }
 .reponse.reponse-geste { text-align: center; }
-.reponse .geste-fftda { display: block; font-weight: 800; }
+.reponse .geste-fftda { display: block; font-weight: 900; }
 
 /* G2 et G4 : les images en grille 2 x 2 (trois images : la troisième est centrée sous les deux autres). */
 .choix.choix-images { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -464,11 +480,11 @@ p.geste-fr { margin: 4px 0 0; }
    Une case vide est en pointillés ; une tuile rangée ou dans la réserve montre l'image en vignette et son nom. */
 .geste-rang { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 10px; }
 .geste-place { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 12px; min-width: 0; }
-.geste-numero { display: grid; place-items: center; width: 34px; height: 34px; font: 800 14px/1 var(--k-police); color: var(--k-texte2); font-variant-numeric: tabular-nums; background: var(--k-surface); border-radius: 50%; }
+.geste-numero { display: grid; place-items: center; width: 34px; height: 34px; font: 900 15px/1 var(--k-police); color: var(--k-texte2); font-variant-numeric: tabular-nums; background: var(--k-surface); border-radius: 50%; }
 .geste-case { min-width: 0; min-height: 63px; border-radius: var(--k-rayon-tuile); }
 .geste-case:empty { background: var(--k-surface); border: 2px dashed var(--k-trait); }
 .choix.choix-ordre { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.reponse.reponse-ordre { display: flex; align-items: center; gap: 10px; width: 100%; height: 100%; min-height: 63px; padding: 6px 10px 6px 6px; font: 800 14px/1.2 var(--k-police); text-align: left; overflow-wrap: anywhere; }
+.reponse.reponse-ordre { display: flex; align-items: center; gap: 10px; width: 100%; height: 100%; min-height: 63px; padding: 6px 10px 6px 6px; font: 900 15px/1.2 var(--k-police); text-align: left; overflow-wrap: anywhere; }
 .reponse-ordre .geste-image { flex: none; width: 48px; height: 48px; }
 .reponse-ordre .geste-image svg { height: 100%; }
 #lecon-verifier { width: 100%; margin-top: 12px; }
@@ -485,8 +501,9 @@ p.geste-fr { margin: 4px 0 0; }
 #fin { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; } /* R7b : plus d'en-tête visible à retrancher */
 .fin-panneau { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; text-align: center; }
 .fin-ti { display: flex; }
-#fin-titre { margin: 12px 0 0; font: var(--k-t-titre); color: var(--k-id-texte); }
-.fin-sous-titre { margin: 6px 0 0; font: 700 15px/1.35 var(--k-police); color: var(--k-texte2); }
+/* Exception voulue à « titres en --k-texte » (choix de Corentin, 27/10) : « Leçon finie ! » garde sa couleur mandarine d'avant le lot. */
+#fin-titre { margin: 12px 0 0; font: 900 29px/1.1 var(--k-police); color: var(--k-id-texte); }
+.fin-sous-titre { margin: 6px 0 0; font: 800 16px/1.35 var(--k-police); color: var(--k-texte2); }
 .fin-cartes { width: 100%; margin-top: 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .fin-carte { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 0 10px; border: 2px solid var(--k-trait); border-bottom-width: 5px; border-radius: var(--k-rayon-tuile); }
 .fin-carte.juste { border-color: var(--k-juste); }
@@ -497,14 +514,14 @@ p.geste-fr { margin: 4px 0 0; }
 .fin-pastille-coche { fill: none; stroke: var(--k-juste-sur); }
 .fin-chrono circle, .fin-chrono path { fill: none; stroke: var(--k-texte2); }
 #fin-score { margin: 20px 0 0; font: var(--k-t-courant); color: var(--k-texte2); }
-.montes-titre { margin: 16px 0 4px; color: var(--k-texte2); font-weight: 800; }
+.montes-titre { margin: 16px 0 4px; color: var(--k-texte2); font-weight: 900; }
 .montes { margin: 0 0 16px; padding-left: 1.25rem; text-align: left; }
 
 .fin-flamme-corps { fill: var(--k-id); }
 .fin-flamme-coeur { fill: var(--k-id-bord); }
 .fin-serie-titre:focus { outline: none; }
-#fin-serie-chiffre { margin: 0; font: 900 120px/1 var(--k-police); color: var(--k-id-texte); }
-#fin-serie-mot { margin: 4px 0 0; font: 800 16px/1.2 var(--k-police); color: var(--k-id-texte); }
+#fin-serie-chiffre { margin: 0; font: 900 130px/1 var(--k-police); color: var(--k-id-texte); }
+#fin-serie-mot { margin: 4px 0 0; font: 900 17px/1.2 var(--k-police); color: var(--k-id-texte); }
 .fin-semaine-carte { width: 100%; margin-top: 30px; padding: 14px 10px; border: 2px solid var(--k-trait); border-radius: var(--k-rayon-carte); }
 .fin-semaine { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .fin-jour { display: flex; flex-direction: column; align-items: center; gap: 8px; }
@@ -520,9 +537,9 @@ p.geste-fr { margin: 4px 0 0; }
 .fin-cours-pastille { display: flex; flex: none; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--k-id); border-radius: 50%; }
 .fin-cours-pastille svg { width: 16px; height: 16px; }
 .fin-note { margin: 22px 0 0; font: var(--k-t-courant); color: var(--k-texte2); }
-#fin-serie { margin: 8px 0 0; font: 700 14px/1.35 var(--k-police); color: var(--k-texte2); }
+#fin-serie { margin: 8px 0 0; font: 800 15px/1.35 var(--k-police); color: var(--k-texte2); }
 
-.fin-pied { position: sticky; bottom: 0; z-index: 1; padding: 12px 0 calc(14px + env(safe-area-inset-bottom)); background: var(--k-fond); }
+.fin-pied { position: sticky; bottom: 0; z-index: 1; padding: 12px 0 calc(14px + env(safe-area-inset-bottom)); background: var(--k-page); }
 .fin-points { display: flex; justify-content: center; gap: 8px; padding-bottom: 20px; }
 .fin-point { width: 8px; height: 8px; background: var(--k-trait); border-radius: 4px; }
 .fin-point.courant { width: 22px; background: var(--k-id); }
@@ -542,7 +559,7 @@ p.geste-fr { margin: 4px 0 0; }
 
 /* Le chevron est tiré de 10 px vers le bord pour que son trait s'aligne sur la page (même geste que la croix de la leçon). */
 .tete-service { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; }
-.tete-service h2 { margin: 0; font: var(--k-t-titre); color: var(--k-texte); }
+.tete-service h2 { margin: 0; font: 900 29px/1.1 var(--k-police); color: var(--k-texte); }
 .lien-retour { margin: 0; }
 .lien-retour a {
   display: flex; align-items: center; justify-content: center;
@@ -551,13 +568,13 @@ p.geste-fr { margin: 4px 0 0; }
 }
 .lien-retour a:focus-visible { outline: 2px solid var(--k-id); outline-offset: 2px; }
 
-.lex-groupe h3, #sources h3, .reglage h3 { margin: 24px 0 8px; font: var(--k-t-etiquette); letter-spacing: .06em; text-transform: uppercase; color: var(--k-texte2); }
+.lex-groupe h3, #sources h3, .reglage h3 { margin: 24px 0 8px; font: 900 16px/1 var(--k-police); letter-spacing: .06em; text-transform: uppercase; color: var(--k-texte); }
 
 .reglage { margin-bottom: 12px; padding: 4px 16px 16px; background: var(--k-fond); border: 2px solid var(--k-trait); border-bottom-width: 5px; border-radius: var(--k-rayon-carte); }
 .reglage h3 { margin-top: 12px; }
 .reglage p { margin: 0 0 8px; }
-.reglage-aide { display: block; margin: 0 0 8px; color: var(--k-texte2); font: 700 14px/1.4 var(--k-police); }
-.reglage-retour { margin: 8px 0 0; font-weight: 800; }
+.reglage-aide { display: block; margin: 0 0 8px; color: var(--k-texte2); font: 800 15px/1.4 var(--k-police); }
+.reglage-retour { margin: 8px 0 0; font-weight: 900; }
 .reglage-retour:empty { margin: 0; }
 .reglage .bouton { width: 100%; }
 .zone-code {
@@ -569,12 +586,12 @@ p.geste-fr { margin: 4px 0 0; }
 .reglage .cours-choix { margin-top: 8px; }
 /* Le rythme : trois segments égaux collés (les traits se recouvrent de 2 px), le segment pressé en mandarine douce par-dessus. */
 .rythme { display: flex; }
-.rythme .bouton { flex: 1 1 0; width: auto; padding: 10px 2px; font-size: .9rem; text-align: center; border-radius: 0; }
+.rythme .bouton { flex: 1 1 0; width: auto; padding: 10px 2px; font-size: 16px; text-align: center; border-radius: 0; }
 .rythme .bouton + .bouton { margin-left: -2px; }
 .rythme .bouton:first-child { border-radius: var(--k-rayon-tuile) 0 0 var(--k-rayon-tuile); }
 .rythme .bouton:last-child { border-radius: 0 var(--k-rayon-tuile) var(--k-rayon-tuile) 0; }
 .rythme .bouton[aria-pressed="true"] { position: relative; color: var(--k-id-texte); background: var(--k-id-doux); border-color: var(--k-id-bord); }
-.version { margin: 12px 0 0; color: var(--k-texte2); font-size: 13px; text-align: center; }
+.version { margin: 12px 0 0; color: var(--k-texte2); font-size: 14px; text-align: center; }
 
 /* Lexique : pas de carte autour, des lignes séparées par un trait de 2 px. Première ligne : la graphie, le hangeul, l'étiquette de la
    boîte ; dessous le français. Les boîtes 1 et 2 (classe fragile) sont en couleur « à revoir », les autres en gris. */
@@ -582,9 +599,9 @@ p.geste-fr { margin: 4px 0 0; }
 .lex-mot { padding: 10px 0 12px; }
 .lex-mot + .lex-mot { border-top: 2px solid var(--k-surface); }
 .lex-nom { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; min-width: 0; }
-.lex-fftda { font: 900 18px/1.25 var(--k-police); overflow-wrap: anywhere; }
-.lex-ko { font: 700 18px/1.25 var(--k-police); color: var(--k-texte2); }
-.lex-fr { display: block; margin-top: 2px; font: 700 15px/1.3 var(--k-police); color: var(--k-texte2); overflow-wrap: anywhere; }
+.lex-fftda { font: 900 19px/1.25 var(--k-police); overflow-wrap: anywhere; }
+.lex-ko { font: 800 19px/1.25 var(--k-police); color: var(--k-texte2); }
+.lex-fr { display: block; margin-top: 2px; font: 800 16px/1.3 var(--k-police); color: var(--k-texte2); overflow-wrap: anywhere; }
 .lex-boite { padding: 2px 8px; font: var(--k-t-etiquette); letter-spacing: .06em; text-transform: uppercase; color: var(--k-texte2); background: var(--k-surface); border-radius: 8px; }
 .lex-boite.fragile { color: var(--k-revoir-texte); background: var(--k-revoir-fond); }
 
@@ -597,14 +614,14 @@ p.geste-fr { margin: 4px 0 0; }
 /* Un lien ne se repère pas qu'à sa couleur : il est souligné. Jamais le bleu du navigateur (le bleu est réservé au côté gauche). */
 .src-doc a { color: var(--k-id-texte); text-decoration: underline; text-underline-offset: 3px; }
 .src-doc a:focus-visible { outline: 2px solid var(--k-id); outline-offset: 2px; }
-.src-date, .src-mots { display: block; margin-top: 2px; color: var(--k-texte2); font: 700 14px/1.35 var(--k-police); }
+.src-date, .src-mots { display: block; margin-top: 2px; color: var(--k-texte2); font: 800 15px/1.35 var(--k-police); }
 #src-doutes { padding-left: 1.75rem; }
 .src-doute { margin-bottom: 10px; padding: 12px 16px; background: var(--k-fond); border: 2px solid var(--k-trait); border-bottom-width: 5px; border-radius: var(--k-rayon-carte); }
-.src-doute::marker { font: 900 16px var(--k-police); color: var(--k-id-texte); }
+.src-doute::marker { font: 900 17px var(--k-police); color: var(--k-id-texte); }
 .src-doute p { margin: 0; }
 .src-doute .src-mots { margin-top: 6px; }
-.src-phrase { margin: 24px 0 8px; text-align: center; font: 800 15px/1.35 var(--k-police); color: var(--k-texte2); }
-.src-phrase + p { margin: 0; text-align: center; font: 700 14px/1.35 var(--k-police); color: var(--k-texte2); }
+.src-phrase { margin: 24px 0 8px; text-align: center; font: 900 16px/1.35 var(--k-police); color: var(--k-texte2); }
+.src-phrase + p { margin: 0; text-align: center; font: 800 15px/1.35 var(--k-police); color: var(--k-texte2); }
 
 /* ---------------------------------------------------------------------------
    Bandeau « Nouvelle version prête » (lot K10) : à portée du pouce, posé juste au-dessus de la
@@ -620,7 +637,7 @@ p.geste-fr { margin: 4px 0 0; }
   padding: 12px 16px;
   background: var(--k-fond); border-top: 1px solid var(--k-trait);
 }
-.maj-texte { margin: 0; font-weight: 700; }
+.maj-texte { margin: 0; font-weight: 800; }
 body:not([data-ecran="lecon"], [data-ecran="fin"]):has(.maj-bandeau:not([hidden])) { padding-bottom: calc(var(--hauteur-barre) + 6rem); }
 body[data-ecran="lecon"] .maj-bandeau, body[data-ecran="fin"] .maj-bandeau { display: none; }
 
@@ -637,35 +654,37 @@ body[data-ecran="lecon"] .maj-bandeau, body[data-ecran="fin"] .maj-bandeau { dis
   max-width: 40rem; margin: 0 auto;
   height: var(--hauteur-barre); padding: 0 8px env(safe-area-inset-bottom);
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  background: var(--k-fond); border-top: 2px solid var(--k-trait);
+  background: var(--k-onglets); border-top: 2px solid var(--k-trait);
 }
 body[data-ecran="lecon"] .onglets, body[data-ecran="fin"] .onglets { display: none; }
 .onglets a {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  color: var(--k-texte2); font: 800 12px/1.3 var(--k-police); text-decoration: none;
+  color: var(--k-onglet-texte); font: 900 13px/1.3 var(--k-police); text-decoration: none;
 }
 /* Une bordure transparente garde la pastille de la même taille, active ou non. */
 .onglet-pastille { display: flex; align-items: center; justify-content: center; width: 52px; height: 34px; border: 2px solid transparent; border-radius: 12px; }
-.onglets a[aria-current="page"] { color: var(--k-id-texte); font-weight: 900; }
-.onglets a[aria-current="page"] .onglet-pastille { color: var(--k-id); background: var(--k-id-doux); border-color: var(--k-id-bord); }
+.onglet-pastille svg { width: 26px; height: 26px; }
+.onglets a[aria-current="page"] { color: var(--k-onglet-actif-texte); }
+.onglets a[aria-current="page"] .onglet-pastille { color: var(--k-onglet-icone); background: var(--k-onglet-pastille); border-color: var(--k-onglet-bord); }
 .onglets a:focus-visible { outline: 2px solid var(--k-id); outline-offset: -2px; }
 
 .moi-tete { display: flex; align-items: center; gap: 14px; }
 .moi-ti { display: flex; flex: none; }
 .moi-tete-texte { flex: 1; min-width: 0; display: grid; gap: 8px; }
-#moi-ceinture { margin: 0; font: 900 19px/1.2 var(--k-police); color: var(--k-texte); }
+#moi-ceinture { margin: 0; font: 900 24px/1.2 var(--k-police); color: var(--k-texte); }
 .moi-progression { display: flex; align-items: center; gap: 8px; }
 .moi-barre { flex: 1; height: 10px; background: var(--k-surface); border-radius: 5px; }
 .moi-barre .barre-rempli { background: var(--k-ceinture-jaune); border-radius: 5px; }
 .moi-unite, .moi-etiquette { font: var(--k-t-etiquette); letter-spacing: .06em; text-transform: uppercase; color: var(--k-texte2); }
 .moi-unite { white-space: nowrap; }
-.moi-etiquette { margin: 20px 0 8px; }
+.moi-etiquette { margin: 20px 0 8px; font-size: 16px; color: var(--k-texte); }
 .moi-lignes { margin: 0; padding: 0; list-style: none; border: 2px solid var(--k-trait); border-radius: 16px; overflow: hidden; }
 .moi-lignes li + li { border-top: 2px solid var(--k-trait); }
 .moi-lignes a { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; padding: 0 16px; color: var(--k-texte); font: var(--k-t-courant); text-decoration: none; }
 .moi-lignes a:focus-visible { outline: 2px solid var(--k-id); outline-offset: -2px; }
+.moi-ligne-titre { font-size: 19px; font-weight: 900; }
 .moi-ligne-fin { display: flex; flex: none; align-items: center; gap: 4px; color: var(--k-texte2); }
-.moi-phrase { margin: 14px 0 0; text-align: center; font: 800 15px/1.35 var(--k-police); color: var(--k-texte2); }
+.moi-phrase { margin: 14px 0 0; text-align: center; font: 900 16px/1.35 var(--k-police); color: var(--k-texte2); }
 #moi .carte-perte { margin-top: 16px; }
 
 /* ---------------------------------------------------------------------------

@@ -18,7 +18,8 @@
 // 23/10/2026 : première version, coquille sans audio.
 // 26/10/2026 : v2, dépôt intermédiaire avant la refonte (mouvements 7 à 18, Baro, exercices de gestes).
 // 27/10/2026 : v3, la refonte façon Duolingo (Ti, leçon et fin, onglets, accueil, écrans de service, poomsae).
-const CACHE_NAME = 'kihapp-v3';
+// 27/10/2026 : v4, fond bleu piscine en clair, textes plus noirs, plus gros et plus gras (choix N1).
+const CACHE_NAME = 'kihapp-v4';
 
 // ---- DEBUT bloc pur ----
 // Pas d'accès à self ici : sw_test.js extrait ce bloc du texte de ce fichier et
